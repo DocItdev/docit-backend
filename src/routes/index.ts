@@ -1,16 +1,8 @@
 import { Router } from 'express';
-import { getAllUsers, addOneUser, updateOneUser, deleteOneUser } from './Users';
-
-
-// User-route
-const userRouter = Router();
-userRouter.get('/all', getAllUsers);
-userRouter.post('/add', addOneUser);
-userRouter.put('/update', updateOneUser);
-userRouter.delete('/delete/:id', deleteOneUser);
+import healthCheck from 'src/controllers/healthCheck';
 
 
 // Export the base-router
 const baseRouter = Router();
-baseRouter.use('/users', userRouter);
+baseRouter.use('/healthCheck', healthCheck);
 export default baseRouter;

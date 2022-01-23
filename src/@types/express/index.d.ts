@@ -1,4 +1,4 @@
-import { IUser } from "@entities/User";
+import { IUser } from "src/models/User";
 
 declare module 'express' {
     export interface Request  {
