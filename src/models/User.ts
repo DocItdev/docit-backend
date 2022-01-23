@@ -1,26 +1,19 @@
-export interface IUser {
+import { Sequelize, DataTypes, Model } from 'sequelize';
+interface UserInstance extends Model {
     id: number;
     name: string;
-    email: string;
-}
+  }
 
-class User implements IUser {
-
-    public id: number;
-    public name: string;
-    public email: string;
-
-    constructor(nameOrUser: string | IUser, email?: string, id?: number) {
-        if (typeof nameOrUser === 'string') {
-            this.name = nameOrUser;
-            this.email = email || '';
-            this.id = id || -1;
-        } else {
-            this.name = nameOrUser.name;
-            this.email = nameOrUser.email;
-            this.id = nameOrUser.id;
-        }
-    }
-}
-
-export default User;
+export default (sequelize: Sequelize) => {
+    const User = sequelize.define<UserInstance>("User", {
+        id: {
+          primaryKey: true,
+          autoIncrement: true,
+          type: DataTypes.INTEGER,
+        },
+        name: {
+          type: DataTypes.STRING,
+        },
+      });
+    return User;
+  };

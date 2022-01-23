@@ -8,19 +8,17 @@ import 'express-async-errors';
 
 import BaseRouter from './routes';
 import logger from '@shared/Logger';
+import { sequelize } from './models';
 
 const app = express();
 const { BAD_REQUEST } = StatusCodes;
 
 
 
-/************************************************************************************
- *                              Set basic express settings
- ***********************************************************************************/
-
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(cookieParser());
+
 
 // Show routes called in console during development
 if (process.env.NODE_ENV === 'development') {
@@ -31,6 +29,9 @@ if (process.env.NODE_ENV === 'development') {
 if (process.env.NODE_ENV === 'production') {
     app.use(helmet());
 }
+
+//Sync with database
+sequelize.sync();
 
 // Add APIs
 app.use('/api', BaseRouter);
