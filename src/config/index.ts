@@ -13,8 +13,14 @@ export default {
     host: process.env.DB_HOST as string,
     port: parseInt(process.env.BD_PORT as string),
     dialect: process.env.DB_DIALECT as string,
-    ssl: true,
     operatorAliases: false,
+    ssl : true,
+      dialectOptions : {
+        ssl: {
+          require: true,
+          rejectUnauthorized: false // <<<<<<< YOU NEED THIS
+        }
+      },
     pool: {
       maxConnections: 5,
       maxIdleTime: 30
