@@ -6,7 +6,7 @@ import express, { NextFunction, Request, Response } from 'express';
 import StatusCodes from 'http-status-codes';
 import 'express-async-errors';
 
-import BaseRouter from './routes';
+import initRoutes from './app';
 import logger from '@shared/Logger';
 import { sequelize } from './models';
 
@@ -33,8 +33,8 @@ if (process.env.NODE_ENV === 'production') {
 //Sync with database
 sequelize.sync();
 
-// Add APIs
-app.use('/api', BaseRouter);
+// Add Routes
+initRoutes(app);
 
 // Print API errors
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
