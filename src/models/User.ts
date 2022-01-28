@@ -8,8 +8,8 @@ export default (sequelize: Sequelize) => {
     const User = sequelize.define<UserInstance>("User", {
         id: {
           primaryKey: true,
-          autoIncrement: true,
-          type: DataTypes.INTEGER,
+          type: DataTypes.UUID,
+          defaultValue: DataTypes.UUIDV4,
         },
         email: {
           type: DataTypes.STRING,

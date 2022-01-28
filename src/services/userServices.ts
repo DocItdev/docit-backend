@@ -1,10 +1,13 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+import { v4 as UUIDV4 } from 'uuid';
 import { User } from '../models';
 import { UserInstance } from '../models/User';
 
 
 
 export async function createUser(user: object) {
-  const userDoc = await User.create({ ...user });
+  const uniqueId: string = UUIDV4()
+  const userDoc = await User.create({ id: uniqueId, ...user });
   await userDoc.save();
 }
 
