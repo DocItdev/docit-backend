@@ -1,6 +1,6 @@
 import {Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes';
-import { getUser } from "src/service/userServices";
+import { getUser } from "src/services/userServices";
 
 export default async function getUserController(req: Request, res: Response) {
   try {
