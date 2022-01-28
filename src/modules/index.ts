@@ -1,6 +1,6 @@
 import { Express } from 'express';
-import healthCheckRouter from './healthcheck';
-import userRouter from './users';
+import healthCheckRouter from './healthcheck/routes';
+import userRouter from './users/routes';
 
 export default function initRoutes(app: Express) {
   // health check routes
