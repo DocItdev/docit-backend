@@ -1,7 +1,10 @@
 import { Sequelize, DataTypes, Model } from 'sequelize';
 export interface UserInstance extends Model {
-    id: number;
-    name: string;
+    id: string;
+    email: string;
+    password: string;
+    firstName: string;
+    lastName: string;
   }
 
 export default (sequelize: Sequelize) => {
