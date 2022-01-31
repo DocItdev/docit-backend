@@ -1,6 +1,8 @@
 import cookieParser from 'cookie-parser';
 import morgan from 'morgan';
 import helmet from 'helmet';
+import passport from 'passport';
+import session from 'express-session';
 
 import express, { NextFunction, Request, Response } from 'express';
 import StatusCodes from 'http-status-codes';
@@ -10,6 +12,7 @@ import initRoutes from './modules';
 import logger from '@shared/Logger';
 import { sequelize } from './models';
 
+
 const app = express();
 const { BAD_REQUEST } = StatusCodes;
 
@@ -18,7 +21,9 @@ const { BAD_REQUEST } = StatusCodes;
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(cookieParser());
-
+app.use(session({ secret: process.env.COOKIE_SECRET, resave: true, saveUninitialized:true}));
+app.use(passport.initialize())
+app.use(passport.session())
 
 // Show routes called in console during development
 if (process.env.NODE_ENV === 'development') {

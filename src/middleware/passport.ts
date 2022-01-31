@@ -25,4 +25,4 @@ passport.deserializeUser((id: string, done) => {
   processUser(id, done);
 });
 
-module.exports = passport;
+export default passport;
