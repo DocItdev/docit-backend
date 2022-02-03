@@ -2,10 +2,21 @@
 import { User } from '../models';
 import { UserInstance } from '../models/User';
 
+interface UserObject {
+  email: string;
+  firstName: string;
+  lastName: string;
+}
 
-export async function createUser(user: object) {
+export async function createUser(user: UserObject) {
+
+  const existingUser = await User.findOne({ where: { email: user.email } });
+  if (existingUser) {
+    return existingUser
+  }
   const userDoc = await User.create({ ...user });
   await userDoc.save();
+  return userDoc;
 }
 
 export async function findUser(email: string): Promise<UserInstance> {
