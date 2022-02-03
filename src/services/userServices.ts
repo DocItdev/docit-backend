@@ -2,7 +2,7 @@
 import { User } from '../models';
 import { UserInstance } from '../models/User';
 
-interface UserObject {
+export interface UserObject {
   email: string;
   firstName: string;
   lastName: string;

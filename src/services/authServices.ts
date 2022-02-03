@@ -62,5 +62,5 @@ export async function verifyGoogleCode(token: string) {
   });
   const payload = ticket.getPayload(); 
 
-  return { payload, token };
+  return  payload ;
 }

@@ -7,7 +7,7 @@ import googleAuthController from './googleAuthController';
 // Export the router
 const router = Router();
 
-router.post('/github-auth', githubAuthController);
-router.post('/google-auth', googleAuthController);
+router.post('/github', githubAuthController);
+router.post('/google', googleAuthController);
 
 export default router;
