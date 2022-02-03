@@ -2,7 +2,7 @@ import {Request, Response } from 'express';
 import StatusCodes from 'http-status-codes';
 import { verifyGithubCode } from 'src/services/authServices';
 
-export default async function authenticateController(req: Request, res: Response) {
+export default async function githubAuthController(req: Request, res: Response) {
   try {
     const { body } = req;
     const code: string = body.code;
