@@ -26,3 +26,11 @@ export async function findUser(email: string): Promise<UserInstance> {
   }
   throw new Error("User Not Found");
 }
+
+export async function findUserById(id: string): Promise<UserInstance> {
+  const user = await User.findOne({ where: { id } });
+  if (user) {
+    return user;
+  }
+  throw new Error("User Not Found");
+}

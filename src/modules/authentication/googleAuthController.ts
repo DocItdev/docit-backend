@@ -2,6 +2,8 @@ import {Request, Response } from 'express';
 import StatusCodes from 'http-status-codes';
 import { verifyGoogleCode } from 'src/services/authServices';
 import { createUser, UserObject } from '../../services/userServices';
+import jwt from 'jsonwebtoken';
+import createJwtToken from 'src/middleware/createJwtToken';
 
 export default async function googleAuthController(req: Request, res: Response) {
   try {
@@ -15,7 +17,8 @@ export default async function googleAuthController(req: Request, res: Response) 
       email: userInfo.email
     };
     const user = await createUser(userData);
-    return res.status(StatusCodes.OK).json({ message: "Login Successful", user });
+    const jwtToken = createJwtToken(user.id)
+    return res.status(StatusCodes.OK).json({ token: jwtToken, user });
   } catch (error) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: error.message });
   }

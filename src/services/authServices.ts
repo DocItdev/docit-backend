@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 import { pErr } from '@shared/functions';
 import axios from 'axios';
@@ -21,7 +22,6 @@ export async function verifyGithubCode(code: string) {
    // Request to exchange code for an access token
   let response = await axios.post('https://github.com/login/oauth/access_token',body, opts)
   const params = await response.data;
-  console.log("I am here ", params);
   if (params.error) {
     handleGithubError(params)
   }

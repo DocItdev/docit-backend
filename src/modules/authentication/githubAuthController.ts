@@ -1,7 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 import {Request, Response } from 'express';
 import StatusCodes from 'http-status-codes';
 import { verifyGithubCode } from 'src/services/authServices';
 import { createUser, UserObject } from '../../services/userServices';
+import jwt from 'jsonwebtoken';
+import createJwtToken from 'src/middleware/createJwtToken';
 
 
 export default async function githubAuthController(req: Request, res: Response) {
@@ -13,13 +16,13 @@ export default async function githubAuthController(req: Request, res: Response) 
     const fullName = userInfo.user.name.split(" "); 
     const email = userInfo.userEmail;
     const userData:UserObject = { 
-                      firstName: fullName[0],
-                      lastName: fullName[1],
-                      email
-                    };
+      firstName: fullName[0],
+      lastName: fullName[1],
+      email
+    };
     const user = await createUser(userData);
-
-    return res.status(StatusCodes.OK).json({ message: "Login Successful", user });
+    const token = createJwtToken(user.id)
+    return res.status(StatusCodes.OK).json({ token, user });
   } catch (error) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: error.message });
   }
