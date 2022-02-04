@@ -1,6 +1,7 @@
 import cookieParser from 'cookie-parser';
 import morgan from 'morgan';
 import helmet from 'helmet';
+import passport from 'passport';
 
 import express, { NextFunction, Request, Response } from 'express';
 import StatusCodes from 'http-status-codes';
@@ -10,6 +11,7 @@ import initRoutes from './modules';
 import logger from '@shared/Logger';
 import { sequelize } from './models';
 
+
 const app = express();
 const { BAD_REQUEST } = StatusCodes;
 
@@ -18,7 +20,7 @@ const { BAD_REQUEST } = StatusCodes;
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(cookieParser());
-
+app.use(passport.initialize())
 
 // Show routes called in console during development
 if (process.env.NODE_ENV === 'development') {
@@ -32,6 +34,7 @@ if (process.env.NODE_ENV === 'production') {
 
 //Sync with database
 sequelize.sync();
+//sequelize.sync({force: true}); //force:true
 
 // Add Routes
 initRoutes(app);
