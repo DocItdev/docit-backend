@@ -1,10 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 import {Request, Response } from 'express';
 import StatusCodes from 'http-status-codes';
-import { verifyGithubCode } from 'src/services/authServices';
+import { verifyGithubCode } from '../../services/authServices';
 import { createUser, UserObject } from '../../services/userServices';
-import jwt from 'jsonwebtoken';
-import createJwtToken from 'src/middleware/createJwtToken';
+import createJwtToken from '../../middleware/createJwtToken';
 
 
 export default async function githubAuthController(req: Request, res: Response) {

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
-import { pErr } from '@shared/functions';
+import { pErr } from '../shared/functions';
 import axios from 'axios';
 import { OAuth2Client } from 'google-auth-library';
 

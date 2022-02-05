@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import { Router } from 'express';
-import passport from 'src/middleware/passport';
+import passport from '../../middleware/passport';
 import createUserController from './createUserController';
 import getUserController from './getUserController';
 

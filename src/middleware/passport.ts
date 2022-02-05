@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 import { Passport } from 'passport';
 import { Strategy, ExtractJwt } from 'passport-jwt';
-import { findUserById } from 'src/services/userServices';
+import { findUserById } from '../services/userServices';
 
 const passport = new Passport();
 

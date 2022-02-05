@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { Router } from 'express';
-import githubAuthController from './githubauthController';
+import githubAuthController from './githubAuthController';
 import googleAuthController from './googleAuthController';
 
 // Export the router

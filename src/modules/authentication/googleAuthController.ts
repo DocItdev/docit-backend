@@ -1,9 +1,8 @@
 import {Request, Response } from 'express';
 import StatusCodes from 'http-status-codes';
-import { verifyGoogleCode } from 'src/services/authServices';
+import { verifyGoogleCode } from '../../services/authServices';
 import { createUser, UserObject } from '../../services/userServices';
-import jwt from 'jsonwebtoken';
-import createJwtToken from 'src/middleware/createJwtToken';
+import createJwtToken from '../../middleware/createJwtToken';
 
 export default async function googleAuthController(req: Request, res: Response) {
   try {

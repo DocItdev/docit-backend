@@ -5,7 +5,7 @@ import authRouter from './authentication/routes';
 
 export default function initRoutes(app: Express) {
   // health check routes
-  app.use('/api/healthcheck', healthCheckRouter);
+  app.use('/', healthCheckRouter);
   app.use('/api/users', userRouter);
   app.use('/api/auth', authRouter)
 }
