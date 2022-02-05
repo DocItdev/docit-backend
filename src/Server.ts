@@ -8,7 +8,7 @@ import StatusCodes from 'http-status-codes';
 import 'express-async-errors';
 
 import initRoutes from './modules';
-import logger from '@shared/Logger';
+import logger from './shared/Logger';
 import { sequelize } from './models';
 
 

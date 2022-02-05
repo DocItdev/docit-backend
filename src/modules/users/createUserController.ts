@@ -1,6 +1,6 @@
 import {Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes';
-import { createUser, UserObject } from "src/services/userServices";
+import { createUser, UserObject } from "../../services/userServices";
 
 
 export default async function createUserController(req:Request, res:Response) {
