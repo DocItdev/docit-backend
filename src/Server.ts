@@ -1,6 +1,7 @@
 import cookieParser from 'cookie-parser';
 import morgan from 'morgan';
 import helmet from 'helmet';
+import 'dotenv/config';
 import passport from 'passport';
 
 import express, { NextFunction, Request, Response } from 'express';
@@ -10,13 +11,13 @@ import 'express-async-errors';
 import initRoutes from './modules';
 import logger from './shared/Logger';
 import { sequelize } from './models';
-
+import cors from 'cors';
 
 const app = express();
 const { BAD_REQUEST } = StatusCodes;
 
 
-
+app.use(cors( { origin: process.env.ORIGIN } ));
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(cookieParser());
