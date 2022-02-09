@@ -3,7 +3,7 @@ import {Request, Response } from 'express';
 import StatusCodes from 'http-status-codes';
 import { verifyGithubCode } from '../../services/authServices';
 import { createUser, UserObject } from '../../services/userServices';
-import createJwtToken from '../../middleware/createJwtToken';
+import createJwtToken, { cookieConfig } from '../../middleware/createJwtToken';
 
 
 export default async function githubAuthController(req: Request, res: Response) {
@@ -21,7 +21,7 @@ export default async function githubAuthController(req: Request, res: Response) 
     };
     const user = await createUser(userData);
     const token = createJwtToken(user.id)
-    return res.status(StatusCodes.OK).json({ token, user });
+    return res.status(StatusCodes.OK).cookie('user_token', token, cookieConfig)
   } catch (error) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: error.message });
   }

@@ -2,7 +2,7 @@ import {Request, Response } from 'express';
 import StatusCodes from 'http-status-codes';
 import { verifyGoogleCode } from '../../services/authServices';
 import { createUser, UserObject } from '../../services/userServices';
-import createJwtToken from '../../middleware/createJwtToken';
+import createJwtToken, { cookieConfig } from '../../middleware/createJwtToken';
 
 export default async function googleAuthController(req: Request, res: Response) {
   try {
@@ -17,7 +17,7 @@ export default async function googleAuthController(req: Request, res: Response) 
     };
     const user = await createUser(userData);
     const jwtToken = createJwtToken(user.id)
-    return res.status(StatusCodes.OK).json({ token: jwtToken, user });
+    return res.status(StatusCodes.OK).cookie('user_token', token, cookieConfig)
   } catch (error) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: error.message });
   }
