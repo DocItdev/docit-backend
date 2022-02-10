@@ -3,6 +3,7 @@ import StatusCodes from 'http-status-codes';
 import { verifyGoogleCode } from '../../services/authServices';
 import { createUser, UserObject } from '../../services/userServices';
 import createJwtToken from '../../middleware/createJwtToken';
+import { pErr } from 'src/shared/functions';
 
 export default async function googleAuthController(req: Request, res: Response) {
   try {
@@ -19,6 +20,7 @@ export default async function googleAuthController(req: Request, res: Response) 
     const jwtToken = createJwtToken(user.id)
     return res.status(StatusCodes.OK).json({ token: jwtToken, user });
   } catch (error) {
+    pErr(error.message);
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: error.message });
   }
 }

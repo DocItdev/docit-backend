@@ -1,4 +1,6 @@
 import { Sequelize, DataTypes, Model } from 'sequelize';
+import  User  from './User';
+
 export interface ProjectInstance extends Model {
     id: string;
     name: string;
@@ -22,5 +24,8 @@ export default (sequelize: Sequelize) => {
           allowNull: true
         }
       });
+
+      Project.belongsTo(User);
+
     return Project;
   };

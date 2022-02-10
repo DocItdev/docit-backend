@@ -1,4 +1,7 @@
 import { Sequelize, DataTypes, Model } from 'sequelize';
+import  Project  from './Project';
+import ProjectInstance from './Project';
+
 export interface UserInstance extends Model {
     id: string;
     email: string;
@@ -27,5 +30,7 @@ export default (sequelize: Sequelize) => {
           allowNull: false
         }
       });
+
+      User.hasMany(Project);
     return User;
   };
