@@ -1,6 +1,7 @@
 import { DataTypes, Model } from "sequelize";
 import { sequelize } from ".";
-import { Project } from "./Project";
+import  Project  from "./Project";
+
 
 export interface UserInstance extends Model {
   id: string;
@@ -9,7 +10,7 @@ export interface UserInstance extends Model {
   lastName: string;
 }
 
-export const User = sequelize.define<UserInstance>("User", {
+const User = sequelize.define<UserInstance>("User", {
   id: {
     primaryKey: true,
     type: DataTypes.UUID,
@@ -31,3 +32,7 @@ export const User = sequelize.define<UserInstance>("User", {
 });
 
 User.hasMany(Project);
+Project.belongsTo(User);
+
+
+export default User;

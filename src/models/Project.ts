@@ -1,5 +1,6 @@
 import { DataTypes, Model } from "sequelize";
 import { sequelize } from ".";
+import { User } from "./User";
 
 export interface ProjectInstance extends Model {
   id: string;
@@ -7,7 +8,7 @@ export interface ProjectInstance extends Model {
   description: string;
 }
 
-export const Project = sequelize.define<ProjectInstance>("User", {
+const Project = sequelize.define<ProjectInstance>("Project", {
   id: {
     primaryKey: true,
     type: DataTypes.UUID,
@@ -24,4 +25,4 @@ export const Project = sequelize.define<ProjectInstance>("User", {
   },
 });
 
-Project.belongsTo(User);
+export default Project;
