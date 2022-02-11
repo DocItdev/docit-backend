@@ -24,7 +24,7 @@ const jwtStrategy = new Strategy({
     if(!user) {
       done(null, null)
     }
-    return done(null, token.userId);
+    return done(null, { id: token.userId });
   } catch (error) {
     done(error);
   }
