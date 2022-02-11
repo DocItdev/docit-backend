@@ -3,7 +3,7 @@ import Project from "src/models/Project";
 export interface ProjectObject{
     name: string;
     description?: string;
-    userId: string;
+    UserId: string;
 }
 
 export async function  createProject(project: ProjectObject){

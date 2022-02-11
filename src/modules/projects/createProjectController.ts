@@ -12,7 +12,7 @@ export default async function createProjectController(req: Request, res: Respons
     const project = await createProject({
         name:projectName,
         description: projectDescription,
-        userId
+        UserId: userId
     })
 
     return res.status(StatusCodes.OK).json(project);

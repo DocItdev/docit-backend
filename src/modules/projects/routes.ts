@@ -7,8 +7,8 @@ import createProjectController from './createProjectController';
 
 const router = Router();
 
-router.post('/', createProjectController);
-router.get('/all',/*passport.authenticate('jwt', { session: false }),*/ getAllProjectsController);
+router.post('/', passport.authenticate('jwt', { session: false }), createProjectController);
+router.get('/all',passport.authenticate('jwt', { session: false }), getAllProjectsController);
 
 
 export default router;
