@@ -1,5 +1,6 @@
 import { DataTypes, Model } from "sequelize";
 import { sequelize } from ".";
+import Document from "./Document";
 
 export interface ProjectInstance extends Model {
   id: string;
@@ -23,5 +24,8 @@ const Project = sequelize.define<ProjectInstance>("Project", {
     allowNull: true,
   },
 });
+
+Project.hasMany(Document);
+Document.belongsTo(Project);
 
 export default Project;
