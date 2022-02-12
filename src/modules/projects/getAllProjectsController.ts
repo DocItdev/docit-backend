@@ -4,7 +4,9 @@ import {getAllProjects} from '../../services/projectServices';
 
 export default async function getAllProjectsController(req: Request, res: Response) {
   try {
-        const userId = req.body.userId;
+    //@ts-ignore
+        const userId = req.user.id;
+        console.log(userId);
         const projects = await getAllProjects(userId);
         
       return res.status(StatusCodes.OK).json({ projects });

@@ -35,4 +35,16 @@ User.hasMany(Project);
 Project.belongsTo(User);
 
 
+// User.hasMany(Project,{
+//   foreignKey:{
+//     name:'userId'
+//   }
+// });
+// Project.belongsTo(User,{
+//   foreignKey:{
+//     name:'userId'
+//   }
+// });
+
+
 export default User;
