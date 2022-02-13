@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
-import { User } from '../models';
-import { UserInstance } from '../models/User';
+import User, { UserInstance } from '../models/User';
 
 export interface UserObject {
   email: string;

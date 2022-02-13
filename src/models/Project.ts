@@ -1,26 +1,31 @@
-import { Sequelize, DataTypes, Model } from 'sequelize';
-export interface ProjectInstance extends Model {
-    id: string;
-    name: string;
-    description: string;
-  }
+import { DataTypes, Model } from "sequelize";
+import { sequelize } from ".";
+import Document from "./Document";
 
-export default (sequelize: Sequelize) => {
-    const Project = sequelize.define<ProjectInstance>("User", {
-        id: {
-          primaryKey: true,
-          type: DataTypes.UUID,
-          defaultValue: DataTypes.UUIDV4,
-        },
-        name: {
-          type: DataTypes.STRING,
-          allowNull: true,
-          unique: false,
-        },
-        description: {
-          type: DataTypes.STRING, 
-          allowNull: true
-        }
-      });
-    return Project;
-  };
+export interface ProjectInstance extends Model {
+  id: string;
+  name: string;
+  description: string;
+}
+
+const Project = sequelize.define<ProjectInstance>("Project", {
+  id: {
+    primaryKey: true,
+    type: DataTypes.UUID,
+    defaultValue: DataTypes.UUIDV4,
+  },
+  name: {
+    type: DataTypes.STRING,
+    allowNull: true,
+    unique: false,
+  },
+  description: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+});
+
+Project.hasMany(Document);
+Document.belongsTo(Project);
+
+export default Project;

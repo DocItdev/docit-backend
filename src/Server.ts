@@ -26,7 +26,7 @@ app.use(passport.initialize())
 // Show routes called in console during development
 if (process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'));
-}
+} 
 
 // Security
 if (process.env.NODE_ENV === 'production') {
