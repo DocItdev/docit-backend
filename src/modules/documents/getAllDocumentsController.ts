@@ -5,7 +5,7 @@ import { getAllDocuments } from '../../services/documentServices';
 export default async function getAllDocumentsController(req: Request, res: Response) {
   try{
 
-    const projectId = req.query.projectId;
+    const projectId = req.query.projectId as string;
     const document = await getAllDocuments( projectId );
     return res.status(StatusCodes.OK).json(document);
 

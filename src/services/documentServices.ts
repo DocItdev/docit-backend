@@ -1,22 +1,22 @@
 import Docoument from "src/models/Document";
 
 
-export async function  createDocument(projectId, documentName:string){
+export async function  createDocument(ProjectId:string, name:string){
     const returnDocument = await Docoument.create(
         {
-            name:documentName,
-            ProjectId: projectId
+            name,
+            ProjectId
         }
     );
     await returnDocument.save();
     return returnDocument;
 }
 
-export async function  getAllDocuments(projectId){
+export async function  getAllDocuments(ProjectId:string){
     const returnDocument = await Docoument.findAll({
         where:
             {
-                ProjectId: projectId
+                ProjectId
             }
         });
     return returnDocument;
@@ -33,6 +33,11 @@ export async function  updateDocument(id:string, name: string){
 }
 
 export async function  deleteDocument(id:string){
-    const returnDocument = await Docoument.destroy({ where: { id }});
+    const returnDocument = await Docoument.destroy({
+         where:
+            { 
+                 id 
+            }
+        });
     return returnDocument;
 }

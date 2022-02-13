@@ -6,7 +6,7 @@ export default async function createDocumentController(req: Request, res: Respon
   try{
     const { body } = req;
     const documentName = body.name;
-    const projectId = req.query.projectId;
+    const projectId:string = req.query.projectId as string;
     const document = await createDocument(
         projectId,
         documentName
