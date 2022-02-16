@@ -1,5 +1,6 @@
 import { DataTypes, Model } from "sequelize";
 import { sequelize } from ".";
+import Post from "./Post";
 
 export interface DocumentInstance extends Model {
   id: string;
@@ -19,5 +20,8 @@ const Document = sequelize.define<DocumentInstance>("Document", {
   }
   
 });
+
+Document.hasMany(Post);
+Post.belongsTo(Document);
 
 export default Document;
