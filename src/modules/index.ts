@@ -4,6 +4,7 @@ import userRouter from './users/routes';
 import authRouter from './authentication/routes';
 import projectRouter from './projects/routes';
 import documentRouter from './documents/routes';
+import postRouter from './posts/routes';
 
 export default function initRoutes(app: Express) {
   // health check routes
@@ -11,5 +12,6 @@ export default function initRoutes(app: Express) {
   app.use('/api/users', userRouter);
   app.use('/api/auth', authRouter);
   app.use('/api/project', projectRouter);
-  app.use('/api/document', documentRouter)
+  app.use('/api/document', documentRouter);
+  app.use('/api/post', postRouter);
 }
