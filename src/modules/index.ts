@@ -11,7 +11,7 @@ export default function initRoutes(app: Express) {
   app.use('/', healthCheckRouter);
   app.use('/api/users', userRouter);
   app.use('/api/auth', authRouter);
-  app.use('/api/project', projectRouter);
-  app.use('/api/document', documentRouter);
-  app.use('/api/post', postRouter);
+  app.use('/api/projects', projectRouter);
+  app.use('/api/documents', documentRouter);
+  app.use('/api/posts', postRouter);
 }
