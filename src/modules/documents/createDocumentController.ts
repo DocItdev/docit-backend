@@ -5,7 +5,7 @@ import { createDocument } from '../../services/documentServices';
 export default async function createDocumentController(req: Request, res: Response) {
   try{
     const { body } = req;
-    const documentName = body.name;
+    const documentName: string = body.name;
     const projectId:string = req.query.projectId as string;
     const document = await createDocument(
         projectId,

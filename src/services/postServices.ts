@@ -1,7 +1,11 @@
-import Post from "src/models/Post";
+import Post from "../models/Post";
 
 
-export async function  createPost(DocumentId:string, postType:string, title:string, description:string, textContent:string){
+export async function  createPost(
+    DocumentId:string, postType:string,
+    title:string,
+    description:string,
+    textContent:string){
     const returnPost = await Post.create(
         {
             
@@ -26,7 +30,12 @@ export async function  getAllPosts(DocumentId:string){
     return returnPosts;
 }
 
-export async function  updatePost(id:string, DocumentId:string, postType:string, title:string, description:string, textContent:string){
+export async function  updatePost(
+    id:string,DocumentId:string,
+    postType:string,
+    title:string,
+    description:string,
+    textContent:string){
     const returnPost = await Post.update(
         { 
             postType,
@@ -43,7 +52,7 @@ export async function  updatePost(id:string, DocumentId:string, postType:string,
     return returnPost;
 }
 
-export async function  deletePost(id:string, DocumentId){
+export async function  deletePost(id:string, DocumentId: string){
     const returnPost = await Post.destroy({
          where:
             { 

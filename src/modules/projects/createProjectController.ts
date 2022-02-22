@@ -7,6 +7,7 @@ export default async function createProjectController(req: Request, res: Respons
     const { body } = req;
     const projectName = body.name;
     const projectDescription = body.description;
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
     const userId = req.user.id;
     const project = await createProject({

@@ -5,7 +5,7 @@ import { deleteDocument } from '../../services/documentServices';
 export default async function deleteDocumentController(req: Request, res: Response) {
   try{
 
-    const documentId = req.params.id;
+    const documentId: string = req.params.id;
     const document = await deleteDocument( documentId );
     return res.status(StatusCodes.OK).json(document);
 

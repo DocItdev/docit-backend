@@ -6,8 +6,8 @@ export default async function updateDocumentController(req: Request, res: Respon
   try{
 
     const { body } = req;
-    const documentName = body.name;
-    const documentId = req.params.id;
+    const documentName: string = body.name;
+    const documentId: string = req.params.id;
     const document = await updateDocument( documentId, documentName );
     return res.status(StatusCodes.OK).json(document);
 

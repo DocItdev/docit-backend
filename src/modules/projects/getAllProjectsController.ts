@@ -4,9 +4,9 @@ import {getAllProjects} from '../../services/projectServices';
 
 export default async function getAllProjectsController(req: Request, res: Response) {
   try {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
-        const userId = req.user.id;
-        console.log(userId);
+        const userId: string = req.user.id;
         const projects = await getAllProjects(userId);
         
       return res.status(StatusCodes.OK).json({ projects });

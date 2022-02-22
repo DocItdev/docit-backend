@@ -1,8 +1,8 @@
-import Docoument from "src/models/Document";
+import Document from "../models/Document";
 
 
 export async function  createDocument(ProjectId:string, name:string){
-    const returnDocument = await Docoument.create(
+    const returnDocument = await Document.create(
         {
             name,
             ProjectId
@@ -12,8 +12,8 @@ export async function  createDocument(ProjectId:string, name:string){
     return returnDocument;
 }
 
-export async function  getAllDocuments(ProjectId:string){
-    const returnDocument = await Docoument.findAll({
+export async function getAllDocuments(ProjectId:string){
+    const returnDocument = await Document.findAll({
         where:
             {
                 ProjectId
@@ -22,8 +22,8 @@ export async function  getAllDocuments(ProjectId:string){
     return returnDocument;
 }
 
-export async function  updateDocument(id:string, name: string){
-    const returnDocument = await Docoument.update({name},{
+export async function updateDocument(id:string, name: string){
+    const returnDocument = await Document.update({name},{
         where:
             {
                 id
@@ -32,8 +32,8 @@ export async function  updateDocument(id:string, name: string){
     return returnDocument;
 }
 
-export async function  deleteDocument(id:string){
-    const returnDocument = await Docoument.destroy({
+export async function deleteDocument(id:string){
+    const returnDocument = await Document.destroy({
          where:
             { 
                  id 

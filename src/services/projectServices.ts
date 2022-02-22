@@ -1,6 +1,7 @@
-import Project from "src/models/Project";
+import Project from "../models/Project";
+import Document from "../models/Document";
 
-export interface ProjectObject{
+export interface ProjectObject {
     name: string;
     description?: string;
     UserId: string;
@@ -13,12 +14,11 @@ export async function  createProject(project: ProjectObject){
 }
 
 export async function getAllProjects(userId: string){
-    console.log(userId);
-
     const projects = await Project.findAll({
         where: {
             UserId: userId
-        }
+        },
+        include: [Document]
     });
     return projects;
 }
@@ -29,12 +29,16 @@ export async function getProject(projectId:string, userId: string){
         where: {
             id:projectId,
             UserId: userId
-        }
+        },
+        include: [Document]
     });
     return projects;
 }
 
-export async function updateProject(userId:string, projectId:string, newProjectName:string, newProjectDescription:string){
+export async function updateProject(
+    userId:string, projectId:string,
+    newProjectName:string,
+    newProjectDescription:string){
     
     const successCode = await Project.update({
         name:newProjectName,
