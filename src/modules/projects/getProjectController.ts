@@ -6,7 +6,7 @@ export default async function getProjectController(req: Request, res: Response) 
   try{
     const projectId = req.params.id;
     //@ts-ignore
-    const userId = req.user.id;
+    const userId: string = req.user.id;
     const project = await getProject(projectId,  userId);
     return res.status(StatusCodes.OK).json(project);
 

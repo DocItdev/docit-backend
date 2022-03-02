@@ -15,7 +15,7 @@ export default {
     dialect: process.env.DB_DIALECT ,
     operatorAliases: false,
     ssl : true,
-      dialectOptions : {
+    dialectOptions : {
         ssl: {
           require: true,
           rejectUnauthorized: false // <<<<<<< YOU NEED THIS

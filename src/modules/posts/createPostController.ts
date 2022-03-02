@@ -5,10 +5,10 @@ import { createPost } from 'src/services/postServices';
 export default async function createPostController(req: Request, res: Response) {
   try{
     const { body } = req;
-    const postType = body.postType;
-    const title = body.title;
-    const textContent = body.textContent;
-    const description = body.description;
+    const postType: string = body.postType;
+    const title: string = body.title;
+    const textContent: string = body.textContent;
+    const description: string = body.description;
     const documentId:string = req.query.doc_id as string;
     const document = await createPost(
         documentId,
