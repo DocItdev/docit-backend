@@ -10,7 +10,7 @@ import 'express-async-errors';
 
 import initRoutes from './modules';
 import logger from './shared/Logger';
-import { sequelize } from './models';
+import { sequelize } from './config';
 import cors from 'cors';
 
 const app = express();

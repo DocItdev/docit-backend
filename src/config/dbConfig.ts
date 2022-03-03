@@ -1,7 +1,5 @@
-import dotenv from 'dotenv';
 import { Options } from 'sequelize';
 
-dotenv.config();
 export default {
   port: process.env.PORT ,
   dbUsername: process.env.DB_USERNAME ,
