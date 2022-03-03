@@ -2,7 +2,6 @@ import cookieParser from 'cookie-parser';
 import morgan from 'morgan';
 import helmet from 'helmet';
 import 'dotenv/config';
-import passport from 'passport';
 
 import express, { NextFunction, Request, Response } from 'express';
 import StatusCodes from 'http-status-codes';
@@ -11,6 +10,7 @@ import 'express-async-errors';
 import initRoutes from './modules';
 import logger from './shared/Logger';
 import { sequelize } from './config';
+import passport from './config/passport'
 import cors from 'cors';
 
 const app = express();

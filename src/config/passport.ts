@@ -1,11 +1,9 @@
-/* eslint-disable @typescript-eslint/no-misused-promises */
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
+
 import { Passport } from 'passport';
-
-
+import { jwtStrategy } from '../modules/authentication/auth.middleware';
 
 const passport = new Passport();
+
+passport.use(jwtStrategy);
 
 export default passport;

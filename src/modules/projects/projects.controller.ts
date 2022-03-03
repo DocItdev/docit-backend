@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
+import { pErr } from "../../shared/functions";
 import {
   createProject,
   deleteProject,
@@ -51,6 +52,7 @@ export async function getAllProjectsController(req: Request, res: Response) {
 
     return res.status(StatusCodes.OK).json({ projects });
   } catch (error) {
+    pErr(error);
     return res.status(StatusCodes.BAD_REQUEST).json({ message: error.message });
   }
 }

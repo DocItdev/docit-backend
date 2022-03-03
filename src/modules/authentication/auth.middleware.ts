@@ -1,14 +1,13 @@
-import passport from '../../config/passport';
 import { Strategy, ExtractJwt } from 'passport-jwt';
 import { findUserById } from '../users/users.service';
 
 /**
- *@description In this module we decipher the JWT token and the data, or payload,
+ @description In this module we decipher the JWT token and the data, or payload,
  that is sent with it. 
  @returns It returns the userId if the user exists in the database otherwise it 
  return null. 
 */
-const jwtStrategy = new Strategy({
+export const jwtStrategy = new Strategy({
   secretOrKey: process.env.COOKIE_SECRET,
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken()
 }, async (token, done) => {
@@ -22,5 +21,3 @@ const jwtStrategy = new Strategy({
     done(error);
   }
 })
-
-passport.use(jwtStrategy);

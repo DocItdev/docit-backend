@@ -2,6 +2,7 @@ import {Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes';
 import { createUser, findUser } from "./users.service";
 import { UserObject } from './users.interface';
+import { pErr } from '../../shared/functions';
 
 
 export async function createUserController(req:Request, res:Response) {
@@ -11,7 +12,7 @@ export async function createUserController(req:Request, res:Response) {
     await createUser(user);
     return res.status(StatusCodes.OK).json({ message: "User Created" });
   } catch(error) {
-    console.log(error);
+    pErr(error);
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(error);
   }
 }
