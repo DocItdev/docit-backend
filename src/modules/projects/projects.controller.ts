@@ -1,6 +1,7 @@
-import { Request, Response } from "express";
+import { Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import { pErr } from "../../shared/functions";
+import { UserRequest } from "../users/users.interface";
 import {
   createProject,
   deleteProject,
@@ -9,13 +10,12 @@ import {
   updateProject,
 } from "./projects.service";
 
-export async function createProjectController(req: Request, res: Response) {
+export async function createProjectController(req: UserRequest, res: Response) {
   try {
     const { body } = req;
     const projectName = body.name;
     const projectDescription = body.description;
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    //@ts-ignore
+   
     const userId = req.user.id;
     const project = await createProject({
       name: projectName,
@@ -29,11 +29,9 @@ export async function createProjectController(req: Request, res: Response) {
   }
 }
 
-export async function deleteProjectController(req: Request, res: Response) {
+export async function deleteProjectController(req: UserRequest, res: Response) {
   try {
     const projectId = req.params.id;
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    //@ts-ignore
     const userId: string = req.user.id;
 
     const successCode = await deleteProject(userId, projectId);
@@ -43,10 +41,8 @@ export async function deleteProjectController(req: Request, res: Response) {
   }
 }
 
-export async function getAllProjectsController(req: Request, res: Response) {
+export async function getAllProjectsController(req: UserRequest, res: Response) {
   try {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    //@ts-ignore
     const userId: string = req.user.id;
     const projects = await getAllProjects(userId);
 
@@ -57,11 +53,9 @@ export async function getAllProjectsController(req: Request, res: Response) {
   }
 }
 
-export async function getProjectController(req: Request, res: Response) {
+export async function getProjectController(req: UserRequest, res: Response) {
   try {
     const projectId = req.params.id;
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    //@ts-ignore
     const userId: string = req.user.id;
     const project = await getProject(projectId, userId);
     return res.status(StatusCodes.OK).json(project);
@@ -70,11 +64,9 @@ export async function getProjectController(req: Request, res: Response) {
   }
 }
 
-export async function updateProjectController(req: Request, res: Response) {
+export async function updateProjectController(req: UserRequest, res: Response) {
   try{
     const projectId = req.params.id;
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    //@ts-ignore
     const userId: string = req.user.id;
     const newProjectName: string = req.body.name;
     const newProjectDescription: string = req.body.description;

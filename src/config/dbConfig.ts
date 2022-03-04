@@ -7,7 +7,7 @@ export default {
   dbPassword: process.env.DB_PASSWORD ,
   dbDialect: process.env.DB_DIALECT ,
   postgres: {
-    logging: true, // Set this to true to see SQL logs, currently disable.
+    logging: false, // Set this to true to see SQL logs, currently disable.
     host: process.env.DB_HOST ,
     port: parseInt(process.env.BD_PORT ),
     dialect: process.env.DB_DIALECT ,

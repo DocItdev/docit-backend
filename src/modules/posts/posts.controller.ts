@@ -81,6 +81,7 @@ export async function updatePostController(req: Request, res: Response) {
     return res.status(StatusCodes.OK).json(document);
 
   } catch(error){
+    console.log(error)
     return res.status(StatusCodes.BAD_REQUEST).json({ message: error.message });
 
   }
