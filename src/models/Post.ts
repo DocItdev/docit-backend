@@ -31,7 +31,7 @@ const Post = sequelize.define<PostInstance>("Post", {
     unique: false,
   },
   textContent: {
-    type: DataTypes.STRING,
+    type: DataTypes.TEXT('long'),
     allowNull: true,
     unique: false,
   }

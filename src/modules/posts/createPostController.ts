@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes';
 import { createPost } from 'src/services/postServices';
+import { pErr } from '../../shared/functions';
 
 export default async function createPostController(req: Request, res: Response) {
   try{
@@ -21,6 +22,7 @@ export default async function createPostController(req: Request, res: Response) 
     return res.status(StatusCodes.OK).json(document);
 
   } catch(error){
+    pErr(error)
     return res.status(StatusCodes.BAD_REQUEST).json({ message: error.message });
 
   }
