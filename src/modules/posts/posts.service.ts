@@ -1,17 +1,12 @@
+import { PostIndex, PostObject } from "./posts.interface";
 import Post from "./posts.model";
 
 export async function createPost(
   DocumentId: string,
-  postType: string,
-  title: string,
-  description: string,
-  textContent: string
+  postObject: PostObject
 ) {
   const returnPost = await Post.create({
-    postType,
-    title,
-    description,
-    textContent,
+    ...postObject,
     DocumentId,
   });
   await returnPost.save();
@@ -23,6 +18,7 @@ export async function getAllPosts(DocumentId: string) {
     where: {
       DocumentId,
     },
+    order:[['index', 'ASC']]
   });
   return returnPosts;
 }
@@ -50,6 +46,17 @@ export async function updatePost(
     }
   );
   return returnPost;
+}
+
+export async function bulkUpdate(DocumentId: string, posts: PostIndex[]) {
+  const statements: Promise<[number, Post[]]>[] = [];
+  for(let i = 0; i < posts.length; i++) {
+    statements.push(Post.update(
+      { index: posts[i].index },
+      { where: { id: posts[i].id, DocumentId  } }))
+  }
+  const results = await Promise.all(statements);
+  return results;
 }
 
 export async function deletePost(id: string, DocumentId: string) {
