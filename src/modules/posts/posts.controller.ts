@@ -1,6 +1,8 @@
 import { Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes';
-import { createPost, getAllPosts, deletePost, updatePost } from './posts.service';
+import { pErr } from '../../shared/functions';
+import { PostIndex } from './posts.interface';
+import { createPost, getAllPosts, deletePost, updatePost, bulkUpdate } from './posts.service';
 
 export async function createPostController(req: Request, res: Response) {
   try{
@@ -10,12 +12,16 @@ export async function createPostController(req: Request, res: Response) {
     const textContent: string = body.textContent;
     const description: string = body.description;
     const documentId:string = req.query.doc_id as string;
+    const index: number = body.index;
     const document = await createPost(
         documentId,
-        postType,
-        title,
-        description,
-        textContent
+        {
+          postType,
+          title,
+          description,
+          textContent,
+          index,
+        }
     );
 
     return res.status(StatusCodes.OK).json(document);
@@ -81,8 +87,21 @@ export async function updatePostController(req: Request, res: Response) {
     return res.status(StatusCodes.OK).json(document);
 
   } catch(error){
-    console.log(error)
+    pErr(error);
     return res.status(StatusCodes.BAD_REQUEST).json({ message: error.message });
 
+  }
+}
+
+export async function bulkUpdatePostController(req: Request, res: Response) {
+  try {
+    const { body } = req;
+    const docId: string = body.docId;
+    const postIndexes: PostIndex[] = body.postIndexes;
+    const results = await bulkUpdate(docId, postIndexes);
+    res.status(StatusCodes.OK).json(results);
+  } catch(error) {
+    pErr(error);
+    return res.status(StatusCodes.BAD_REQUEST).json({ message: error.message });
   }
 }

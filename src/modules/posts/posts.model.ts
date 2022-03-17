@@ -2,11 +2,11 @@ import { DataTypes, Model } from "sequelize";
 import { sequelize } from "../../config";
 
 export class Post extends Model {
-  id: string;
-  postType: string;
-  title: string;
-  description: string;
-  textContent: string;
+  declare id: string;
+  declare postType: string;
+  declare title: string;
+  declare description: string;
+  declare textContent: string;
 }
 
 Post.init({
@@ -31,7 +31,12 @@ Post.init({
     unique: false,
   },
   textContent: {
-    type: DataTypes.TEXT('long'),
+    type: DataTypes.TEXT,
+    allowNull: true,
+    unique: false,
+  },
+  index: {
+    type: DataTypes.INTEGER,
     allowNull: true,
     unique: false,
   }
