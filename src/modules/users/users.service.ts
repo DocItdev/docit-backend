@@ -1,12 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
-import { User } from '../models';
-import { UserInstance } from '../models/User';
-
-export interface UserObject {
-  email: string;
-  firstName: string;
-  lastName: string;
-}
+import User from './users.model';
+import { UserObject } from './users.interface';
 
 export async function createUser(user: UserObject) {
 
@@ -19,7 +13,7 @@ export async function createUser(user: UserObject) {
   return userDoc;
 }
 
-export async function findUser(email: string): Promise<UserInstance> {
+export async function findUser(email: string): Promise<User> {
   const user = await User.findOne({ where: { email } });
   if (user) {
     return user;
@@ -27,7 +21,7 @@ export async function findUser(email: string): Promise<UserInstance> {
   throw new Error("User Not Found");
 }
 
-export async function findUserById(id: string): Promise<UserInstance> {
+export async function findUserById(id: string): Promise<User> {
   const user = await User.findOne({ where: { id } });
   if (user) {
     return user;

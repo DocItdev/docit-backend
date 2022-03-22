@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
-import { pErr } from '../shared/functions';
+import { pErr } from '../../shared/functions';
 import axios from 'axios';
 import { OAuth2Client } from 'google-auth-library';
+import jwt from 'jsonwebtoken';
 
 
 function handleGithubError(response) {
@@ -63,4 +64,10 @@ export async function verifyGoogleCode(token: string) {
   const payload = ticket.getPayload(); 
 
   return  payload ;
+}
+
+export function createJwtToken(userId: string): string {
+  return jwt.sign({ userId }, process.env.COOKIE_SECRET, {
+    expiresIn: "10h",
+  });
 }

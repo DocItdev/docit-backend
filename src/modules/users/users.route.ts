@@ -1,9 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import { Router } from 'express';
-import passport from '../../middleware/passport';
-import createUserController from './createUserController';
-import getUserController from './getUserController';
+import passport from '../../config/passport';
+import { createUserController, getUserController } from './users.controller';
 
 // Export the router
 const router = Router();

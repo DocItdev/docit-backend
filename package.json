@@ -1,16 +1,16 @@
 {
   "name": "docit-backend",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "scripts": {
     "lint": "eslint . --ext .ts",
     "postinstall": "npx tsc",
     "start": "node dist/index.js",
-    "start:dev": "nodemon",
+    "dev": "nodemon",
     "test": "nodemon --config ./spec/nodemon.json",
     "test:no-reloading": "./node_modules/.bin/ts-node -r tsconfig-paths/register ./spec"
   },
   "engines": {
-    "node": "12.16.3" 
+    "node": "12.16.3"
   },
   "nodemonConfig": {
     "watch": [
@@ -49,7 +49,10 @@
       "@typescript-eslint/no-explicit-any": 0,
       "@typescript-eslint/no-floating-promises": 0,
       "@typescript-eslint/no-unsafe-member-access": 0,
-      "@typescript-eslint/no-unsafe-assignment": 0
+      "@typescript-eslint/no-unsafe-assignment": 0,
+      "@typescript-eslint/no-unsafe-argument": 0,
+      "@typescript-eslint/no-unsafe-call": 0,
+      "@typescript-eslint/no-misused-promises": 0
     }
   },
   "eslintIgnore": [
@@ -57,12 +60,11 @@
     "build.ts"
   ],
   "dependencies": {
-    "@types/express-session": "^1.17.4",
-    "@types/validator": "^13.7.1",
     "axios": "^0.25.0",
     "command-line-args": "^5.2.0",
     "cookie-parser": "^1.4.6",
-    "dotenv": "^14.2.0",
+    "cors": "^2.8.5",
+    "dotenv": "^14.3.2",
     "express": "^4.17.2",
     "express-async-errors": "^3.1.1",
     "express-session": "^1.17.2",
@@ -85,6 +87,9 @@
     "sequelize-cli": "^6.4.1"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.12",
+    "@types/express-session": "^1.17.4",
+    "@types/validator": "^13.7.1",
     "@types/axios": "^0.14.0",
     "@types/command-line-args": "^5.2.0",
     "@types/cookie-parser": "^1.4.2",
