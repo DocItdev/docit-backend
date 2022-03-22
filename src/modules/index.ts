@@ -8,7 +8,7 @@ import postRouter from './posts/posts.route';
 
 export default function initRoutes(app: Express) {
   // health check routes
-  app.use('/', healthCheckRouter);
+  app.use('/api', healthCheckRouter);
   app.use('/api/users', userRouter);
   app.use('/api/auth', authRouter);
   app.use('/api/projects', projectRouter);
