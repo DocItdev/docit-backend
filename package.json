@@ -60,6 +60,8 @@
     "build.ts"
   ],
   "dependencies": {
+    "@types/multer": "^1.4.7",
+    "aws-sdk": "^2.1110.0",
     "axios": "^0.25.0",
     "command-line-args": "^5.2.0",
     "cookie-parser": "^1.4.6",
@@ -77,6 +79,7 @@
     "jsonwebtoken": "^8.5.1",
     "module-alias": "^2.2.2",
     "morgan": "^1.10.0",
+    "multer": "^1.4.4",
     "passport": "^0.5.2",
     "passport-github2": "^0.1.12",
     "passport-jwt": "^4.0.0",
@@ -87,13 +90,13 @@
     "sequelize-cli": "^6.4.1"
   },
   "devDependencies": {
-    "@types/cors": "^2.8.12",
-    "@types/express-session": "^1.17.4",
-    "@types/validator": "^13.7.1",
+    "@types/aws-sdk": "^2.7.0",
     "@types/axios": "^0.14.0",
     "@types/command-line-args": "^5.2.0",
     "@types/cookie-parser": "^1.4.2",
+    "@types/cors": "^2.8.12",
     "@types/express": "^4.17.13",
+    "@types/express-session": "^1.17.4",
     "@types/find": "^0.2.1",
     "@types/fs-extra": "^9.0.13",
     "@types/jasmine": "^3.10.3",
@@ -107,6 +110,7 @@
     "@types/passport-local": "^1.0.34",
     "@types/supertest": "^2.0.11",
     "@types/uuid": "^8.3.4",
+    "@types/validator": "^13.7.1",
     "@typescript-eslint/eslint-plugin": "^5.10.0",
     "@typescript-eslint/parser": "^5.10.0",
     "eslint": "^8.7.0",

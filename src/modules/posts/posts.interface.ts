@@ -8,6 +8,7 @@ export interface PostObject {
   postType: string;
   title?: string;
   description?: string;
-  textContent: string;
+  textContent?: string;
   index: number;
+  mediaBlobUrl?: string;
 }

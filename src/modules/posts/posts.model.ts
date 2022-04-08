@@ -7,6 +7,7 @@ export class Post extends Model {
   declare title: string;
   declare description: string;
   declare textContent: string;
+  declare mediaBlobUrl: string;
 }
 
 Post.init({
@@ -39,7 +40,12 @@ Post.init({
     type: DataTypes.INTEGER,
     allowNull: true,
     unique: false,
-  }
+  },
+  mediaBlobUrl: {
+    type: DataTypes.STRING,
+    allowNull: true,
+    unique: true,
+  },
   
 }, { sequelize });
 
