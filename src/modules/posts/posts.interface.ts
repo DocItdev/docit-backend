@@ -10,5 +10,5 @@ export interface PostObject {
   description?: string;
   textContent?: string;
   index: number;
-  mediaBlobUrl?: string;
+  mediaFilePath?: string;
 }

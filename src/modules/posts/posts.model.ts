@@ -7,7 +7,7 @@ export class Post extends Model {
   declare title: string;
   declare description: string;
   declare textContent: string;
-  declare mediaBlobUrl: string;
+  declare mediaFilePath: string;
 }
 
 Post.init({
@@ -41,7 +41,7 @@ Post.init({
     allowNull: true,
     unique: false,
   },
-  mediaBlobUrl: {
+  mediaFilePath: {
     type: DataTypes.STRING,
     allowNull: true,
     unique: true,

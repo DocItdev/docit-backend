@@ -13,7 +13,7 @@ export async function createPostController(req: Request, res: Response) {
     const description: string = body.description;
     const documentId:string = req.query.doc_id as string;
     const index: number = body.index;
-    const mediaBlobUrl: string = body.mediaBlobUrl;
+    const mediaFilePath: string = body.mediaFilePath;
     const document = await createPost(
         documentId,
         {
@@ -22,7 +22,7 @@ export async function createPostController(req: Request, res: Response) {
           description,
           textContent,
           index,
-          mediaBlobUrl
+          mediaFilePath
         }
     );
 
