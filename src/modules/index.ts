@@ -5,6 +5,7 @@ import authRouter from './authentication/auth.route';
 import projectRouter from './projects/projects.route';
 import documentRouter from './documents/documents.route';
 import postRouter from './posts/posts.route';
+import mediaStoreRouter from './mediastorage/mediastorage.route';
 
 export default function initRoutes(app: Express) {
   // health check routes
@@ -14,4 +15,5 @@ export default function initRoutes(app: Express) {
   app.use('/api/projects', projectRouter);
   app.use('/api/documents', documentRouter);
   app.use('/api/posts', postRouter);
+  app.use('/api/storage', mediaStoreRouter);
 }
