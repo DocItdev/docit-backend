@@ -1,4 +1,5 @@
 import S3 from 'aws-sdk/clients/s3';
+import jwt from 'jsonwebtoken';
 import s3Config from '../../config/s3Config';
 import { AwsFile, UploadedFile } from './mediastorage.interface';
 
@@ -44,13 +45,22 @@ export async function uploadFile(file: AwsFile): Promise<string> {
  * @param file object containing path or key of file
  * @returns 
  */
-export async function getUploadedFile(file: UploadedFile) {
+export async function headUploadedFile(file: UploadedFile) {
   const { bucketName } = s3Config;
-  const data = await s3Client.getObject({
+  const data = await s3Client.headObject({
     Bucket: bucketName,
     Key: file.path
   }).promise();
   return data;
+}
+
+export function getUploadedFileStream (file: UploadedFile) {
+  const { bucketName } = s3Config;
+  const stream = s3Client.getObject({
+    Bucket: bucketName,
+    Key: file.path
+  }).createReadStream();
+  return stream;
 }
 
 /**
@@ -82,3 +92,14 @@ export async function deleteUploadedFile(file: UploadedFile) {
     Key: file.path,
   }).promise();
 }
+
+export function createStoreJwtToken(fileKey: string): string {
+  return jwt.sign({ fileKey }, process.env.NONCE_SECRET, {
+    expiresIn: "10h",
+  });
+}
+
+export function verifyStoreJwtToken(token: string) {
+  return jwt.verify(token, process.env.NONCE_SECRET)
+}
+
