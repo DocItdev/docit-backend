@@ -1,3 +1,4 @@
+import { Request } from 'express';
 export interface AwsFile {
   name: string;
   size: number;
@@ -8,4 +9,8 @@ export interface AwsFile {
 
 export interface UploadedFile {
   path: string;
+}
+
+export interface FileRequest extends Request {
+  fileKey: string;
 }
