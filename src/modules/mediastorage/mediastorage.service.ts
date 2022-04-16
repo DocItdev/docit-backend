@@ -6,8 +6,10 @@ import s3Config from '../../config/s3Config';
 import { AwsFile, UploadedFile } from './mediastorage.interface';
 
 const s3Client = new S3({
-  accessKeyId: s3Config.accessKeyId,
-  secretAccessKey: s3Config.secretAccessKey,
+  credentials: {
+    accessKeyId: s3Config.accessKeyId,
+    secretAccessKey: s3Config.secretAccessKey,
+  },
   region: s3Config.region,
 });
 
@@ -32,12 +34,17 @@ export async function uploadFile(file: AwsFile): Promise<string> {
   const timestamp: number = Date.now();
   const { bucketName } = s3Config;
   const fileKey: string = generateFileKey(file, timestamp);
-  await s3Client.putObject({
+  const target = {
     Bucket: bucketName,
     Key: fileKey,
     ContentType: file.type,
     Body: file.content,
-  }).promise();
+  }
+  const parallelUpload = new Upload({
+    client: s3Client,
+    params: target,
+  });
+  await parallelUpload.done();
 
   return fileKey;
 }
@@ -45,15 +52,24 @@ export async function uploadFile(file: AwsFile): Promise<string> {
 /**
  * 
  * @param file object containing path or key of file
- * @returns 
+ * @returns object with metadata and stats of file
  */
-export async function getUploadedFile(file: UploadedFile) {
+export async function headUploadedFile(file: UploadedFile) {
   const { bucketName } = s3Config;
-  const data = await s3Client.getObject({
+  const data = await s3Client.headObject({
     Bucket: bucketName,
     Key: file.path
-  }).promise();
+  });
   return data;
+}
+
+export async function getUploadedFile (file: UploadedFile) {
+  const { bucketName } = s3Config;
+  const response = await s3Client.getObject({
+    Bucket: bucketName,
+    Key: file.path
+  })
+  return response;
 }
 
 /**
@@ -62,14 +78,18 @@ export async function getUploadedFile(file: UploadedFile) {
  * @returns a string containing temporary download Url for specified file
  */
 
-export function getDownloadUrl(file: UploadedFile): string {
+export async function getDownloadUrl(file: UploadedFile): Promise<string> {
   const { bucketName } = s3Config;
-  const signedUrlExpireSeconds = 60 * 2; // 2min
-  const url: string = s3Client.getSignedUrl('getObject', {
+  const signedUrlExpireSeconds = 60 * 60 * 24; // 24h
+  const command = new GetObjectCommand({
     Bucket: bucketName,
     Key: file.path,
-    Expires: signedUrlExpireSeconds,
   });
+  const url: string = await getSignedUrl(
+    s3Client,
+    command, 
+    { expiresIn: signedUrlExpireSeconds }
+  );
   return url;
 }
 
