@@ -6,8 +6,7 @@ import {
   uploadFile,
   deleteUploadedFile,
   getDownloadUrl,
-  headUploadedFile,
-  getUploadedFileStream,
+  getUploadedFile,
   createStoreJwtToken,
 } from "./mediastorage.service";
 
@@ -29,11 +28,11 @@ export async function uploadFileController(req: Request, res: Response) {
   }
 }
 
-export function getUploadedFileController(req: Request, res: Response) {
+export async function getUploadedFileController(req: Request, res: Response) {
   try {
     const { query } = req;
     const file: UploadedFile = { path: String(query.filePath) };
-    const url: string = getDownloadUrl(file);
+    const url: string = await getDownloadUrl(file);
     return res.status(StatusCodes.OK).json({ mediaDownloadUrl: url });
   } catch (error) {
     pErr(error);
@@ -46,9 +45,9 @@ export async function getFileStreamController(req: FileRequest, res: Response) {
     const { fileKey, headers } = req;
     const uploadedFile: UploadedFile = { path: fileKey };
     const range: string = headers.range;
-    const fileStat = await headUploadedFile(uploadedFile);
-    const fileSize = fileStat.ContentLength;
-    const fileStream = getUploadedFileStream(uploadedFile)
+    const file = await getUploadedFile(uploadedFile);
+    const fileSize = file.ContentLength;
+    const fileStream = file.Body;
     if(range) {
       const parts = range.replace(/bytes=/, "").split("-");
       const start = parseInt(parts[0], 10);
@@ -60,14 +59,14 @@ export async function getFileStreamController(req: FileRequest, res: Response) {
         "Content-Range": `bytes ${start}-${end}/${fileSize}`,
         "Accept-Ranges": "bytes",
         "Content-Length": chunkSize,
-        "Content-Type": fileStat.ContentType,
+        "Content-Type": file.ContentType,
       };
       res.writeHead(206, resHeaders);
       fileStream.pipe(res);
     } else {
       const head = {
         'Content-Length': fileSize,
-        'Content-Type': fileStat.ContentType,
+        'Content-Type': file.ContentType,
       };
       res.writeHead(200, head);
       fileStream.pipe(res);
