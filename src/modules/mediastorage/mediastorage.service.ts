@@ -1,16 +1,10 @@
-// import S3 from 'aws-sdk/clients/s3';
-import { S3, GetObjectCommand } from '@aws-sdk/client-s3'
-import { Upload } from '@aws-sdk/lib-storage';
-import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
-import jwt from 'jsonwebtoken';
+import S3 from 'aws-sdk/clients/s3';
 import s3Config from '../../config/s3Config';
 import { AwsFile, UploadedFile } from './mediastorage.interface';
 
 const s3Client = new S3({
-  credentials: {
-    accessKeyId: s3Config.accessKeyId,
-    secretAccessKey: s3Config.secretAccessKey,
-  },
+  accessKeyId: s3Config.accessKeyId,
+  secretAccessKey: s3Config.secretAccessKey,
   region: s3Config.region,
 });
 
@@ -35,17 +29,12 @@ export async function uploadFile(file: AwsFile): Promise<string> {
   const timestamp: number = Date.now();
   const { bucketName } = s3Config;
   const fileKey: string = generateFileKey(file, timestamp);
-  const target = {
+  await s3Client.putObject({
     Bucket: bucketName,
     Key: fileKey,
     ContentType: file.type,
     Body: file.content,
-  }
-  const parallelUpload = new Upload({
-    client: s3Client,
-    params: target,
-  });
-  await parallelUpload.done();
+  }).promise();
 
   return fileKey;
 }
@@ -53,24 +42,15 @@ export async function uploadFile(file: AwsFile): Promise<string> {
 /**
  * 
  * @param file object containing path or key of file
- * @returns object with metadata and stats of file
+ * @returns 
  */
-export async function headUploadedFile(file: UploadedFile) {
+export async function getUploadedFile(file: UploadedFile) {
   const { bucketName } = s3Config;
-  const data = await s3Client.headObject({
+  const data = await s3Client.getObject({
     Bucket: bucketName,
     Key: file.path
-  });
+  }).promise();
   return data;
-}
-
-export async function getUploadedFile (file: UploadedFile) {
-  const { bucketName } = s3Config;
-  const response = await s3Client.getObject({
-    Bucket: bucketName,
-    Key: file.path
-  })
-  return response;
 }
 
 /**
@@ -79,18 +59,14 @@ export async function getUploadedFile (file: UploadedFile) {
  * @returns a string containing temporary download Url for specified file
  */
 
-export async function getDownloadUrl(file: UploadedFile): Promise<string> {
+export function getDownloadUrl(file: UploadedFile): string {
   const { bucketName } = s3Config;
-  const signedUrlExpireSeconds = 60 * 60 * 24; // 24h
-  const command = new GetObjectCommand({
+  const signedUrlExpireSeconds = 60 * 2; // 2min
+  const url: string = s3Client.getSignedUrl('getObject', {
     Bucket: bucketName,
     Key: file.path,
+    Expires: signedUrlExpireSeconds,
   });
-  const url: string = await getSignedUrl(
-    s3Client,
-    command, 
-    { expiresIn: signedUrlExpireSeconds }
-  );
   return url;
 }
 
@@ -104,16 +80,5 @@ export async function deleteUploadedFile(file: UploadedFile) {
   await s3Client.deleteObject({
     Bucket: bucketName,
     Key: file.path,
-  });
+  }).promise();
 }
-
-export function createStoreJwtToken(fileKey: string): string {
-  return jwt.sign({ fileKey }, process.env.NONCE_SECRET, {
-    expiresIn: "10h",
-  });
-}
-
-export function verifyStoreJwtToken(token: string) {
-  return jwt.verify(token, process.env.NONCE_SECRET)
-}
-

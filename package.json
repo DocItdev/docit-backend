@@ -60,9 +60,7 @@
     "build.ts"
   ],
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.72.0",
-    "@aws-sdk/lib-storage": "^3.72.0",
-    "@aws-sdk/s3-request-presigner": "^3.72.0",
+    "aws-sdk": "^2.1110.0",
     "axios": "^0.25.0",
     "command-line-args": "^5.2.0",
     "cookie-parser": "^1.4.6",
