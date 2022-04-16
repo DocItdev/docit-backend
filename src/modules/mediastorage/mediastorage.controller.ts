@@ -26,11 +26,11 @@ export async function uploadFileController(req: Request, res: Response) {
   }
 }
 
-export function getUploadedFileController(req: Request, res: Response) {
+export async function getUploadedFileController(req: Request, res: Response) {
   try {
     const { query } = req;
     const file: UploadedFile = { path: String(query.filePath) };
-    const url: string = getDownloadUrl(file);
+    const url: string = await getDownloadUrl(file);
     return res.status(StatusCodes.OK).json({ mediaDownloadUrl: url });
   } catch (error) {
     pErr(error);
