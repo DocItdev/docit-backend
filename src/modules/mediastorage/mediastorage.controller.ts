@@ -6,6 +6,7 @@ import {
   uploadFile,
   deleteUploadedFile,
   getDownloadUrl,
+  headUploadedFile,
 } from "./mediastorage.service";
 
 export async function uploadFileController(req: Request, res: Response) {
@@ -31,7 +32,8 @@ export async function getUploadedFileController(req: Request, res: Response) {
     const { query } = req;
     const file: UploadedFile = { path: String(query.filePath) };
     const url: string = await getDownloadUrl(file);
-    return res.status(StatusCodes.OK).json({ mediaDownloadUrl: url });
+    const fileStat = await headUploadedFile(file);
+    return res.status(StatusCodes.OK).json({ ...fileStat, mediaDownloadUrl: url });
   } catch (error) {
     pErr(error);
     return res.status(StatusCodes.BAD_REQUEST).json({ message: error.message });
