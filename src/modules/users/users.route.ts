@@ -2,10 +2,11 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import { Router } from 'express';
 import passport from '../../config/passport';
-import { createUserController, getUserController } from './users.controller';
+import { createUserController, getUserController, deleteUserController } from './users.controller';
 
 // Export the router
 const router = Router();
-router.post('/createUser',passport.authenticate('jwt', { session: false }), createUserController);
-router.get('/getUser',passport.authenticate('jwt', { session: false }), getUserController);
+router.post('/',passport.authenticate('jwt', { session: false }), createUserController);
+router.get('/:email',passport.authenticate('jwt', { session: false }), getUserController);
+router.delete('/:id',passport.authenticate('jwt', { session: false }), deleteUserController);
 export default router;

@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 import User from './users.model';
 import { UserObject } from './users.interface';
+import { createInitialProject } from '../projects/projects.service';
 
 export async function createUser(user: UserObject) {
 
@@ -10,10 +11,11 @@ export async function createUser(user: UserObject) {
   }
   const userDoc = await User.create({ ...user });
   await userDoc.save();
+  await createInitialProject(userDoc.get('id'));
   return userDoc;
 }
 
-export async function findUser(email: string): Promise<User> {
+export async function findUserByEmail(email: string): Promise<User> {
   const user = await User.findOne({ where: { email } });
   if (user) {
     return user;
@@ -27,4 +29,11 @@ export async function findUserById(id: string): Promise<User> {
     return user;
   }
   throw new Error("User Not Found");
+}
+
+export async function deleteUserById(id: string): Promise<number> {
+  const resolvedCode = await User.destroy({
+    where: { id }
+  });
+  return resolvedCode;
 }
