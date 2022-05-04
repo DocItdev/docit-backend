@@ -18,6 +18,9 @@ export async function uploadFileController(req: Request, res: Response) {
       type: file.mimetype,
       content: file.buffer,
       extension: file.mimetype.split("/")[1],
+      metadata: {
+        originalName: file.originalname
+      }
     });
     const uploadedFile: UploadedFile = { path: fileUrl };
     return res.status(StatusCodes.OK).json(uploadedFile);

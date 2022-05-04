@@ -39,6 +39,9 @@ export async function uploadFile(file: AwsFile): Promise<string> {
     Key: fileKey,
     ContentType: file.type,
     Body: file.content,
+    Metadata: {
+      originalName: file.metadata.originalName
+    },
   }
   const parallelUpload = new Upload({
     client: s3Client,
