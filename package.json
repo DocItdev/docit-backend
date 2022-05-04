@@ -7,10 +7,11 @@
     "start": "node dist/index.js",
     "dev": "nodemon",
     "test": "nodemon --config ./spec/nodemon.json",
-    "test:no-reloading": "./node_modules/.bin/ts-node -r tsconfig-paths/register ./spec"
+    "test:no-reloading": "./node_modules/.bin/ts-node -r tsconfig-paths/register ./spec",
+    "deploy":"git push heroku main"
   },
   "engines": {
-    "node": "12.16.3"
+    "node": "16.14.2"
   },
   "nodemonConfig": {
     "watch": [
