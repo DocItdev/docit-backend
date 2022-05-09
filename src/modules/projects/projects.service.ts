@@ -1,10 +1,27 @@
 import Project from "./projects.model";
 import Document from "../documents/documents.model";
 import { ProjectObject } from "./projects.interface";
+import { createDocument } from "../documents/documents.service";
+import { createPost } from "../posts/posts.service";
+import postMock from '../posts/posts.json';
 
 export async function  createProject(project: ProjectObject){
     const projectDoc = await Project.create({ ...project });
     await projectDoc.save();
+    return projectDoc;
+}
+
+export async function createInitialProject(userId:string,): Promise<Project> {
+    const projectDoc = await Project.create({
+        name: 'Sample Project',
+        description: 'auto-generated personal project',
+        UserId: userId,
+    });
+    await projectDoc.save();
+    const document = await createDocument(projectDoc.get('id'), 'Sample Document');
+    await document.save();
+    const post = await createPost(document.get('id'), postMock)
+    await post.save();
     return projectDoc;
 }
 
