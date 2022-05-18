@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
-import { pErr } from '../../shared/functions';
+import { pErr, pInfo } from '../../shared/functions';
 import axios from 'axios';
 import { OAuth2Client } from 'google-auth-library';
 import jwt from 'jsonwebtoken';
@@ -14,6 +14,7 @@ function handleGithubError(response) {
 }
 
 export async function verifyGithubCode(code: string) {
+  pInfo('GITHUB Code',code);
   const body = {
     'client_id': process.env.GITHUB_CLIENT_ID,
     'client_secret': process.env.GITHUB_CLIENT_SECRET,
@@ -34,6 +35,7 @@ export async function verifyGithubCode(code: string) {
     },
   });
   const user = await response.data;
+  pInfo('GITHUB USER', JSON.stringify(user));
   if (user.error) {
     handleGithubError(user);
   }
@@ -45,6 +47,7 @@ export async function verifyGithubCode(code: string) {
   });
 
   const userEmails = await response.data;
+  pInfo('USER EMAILS', JSON.stringify(userEmails));
   if (userEmails.error) {
     handleGithubError(userEmails);
   }
@@ -57,10 +60,12 @@ export async function verifyGithubCode(code: string) {
 export async function verifyGoogleCode(token: string) {
 
   const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+  pInfo('GOOGLE_CLIENT', JSON.stringify(client));
   const ticket = await client.verifyIdToken({
     idToken: token,
     audience: process.env.CLIENT_ID
   });
+  pInfo('GOOGLE_TICKET', JSON.stringify(ticket));
   const payload = ticket.getPayload(); 
 
   return  payload ;
