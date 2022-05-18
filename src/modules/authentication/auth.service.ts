@@ -36,7 +36,6 @@ export async function verifyGithubCode(code: string) {
   });
   const user = await response.data;
   pInfo('GITHUB USER', JSON.stringify(user));
-  console.log(user)
   if (user.error) {
     handleGithubError(user);
   }
@@ -49,7 +48,6 @@ export async function verifyGithubCode(code: string) {
 
   const userEmails = await response.data;
   pInfo('USER EMAILS', JSON.stringify(userEmails));
-  console.log(userEmails);
   if (userEmails.error) {
     handleGithubError(userEmails);
   }

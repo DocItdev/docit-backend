@@ -11,18 +11,17 @@ export async function githubAuthController(req: Request, res: Response) {
     const code: string = body.code;
     const userInfo = await verifyGithubCode(code);
 
-    const fullName = userInfo.user.name?.split(" "); 
+    const fullName: string[] = userInfo.user.name?.split(" "); 
     const email = userInfo.userEmail;
     const userData:UserObject = { 
-      firstName: fullName[0],
-      lastName: fullName[1],
+      firstName: fullName.length ? fullName[0] : '',
+      lastName: fullName.length ? fullName[1] : '',
       email
     };
     const user = await createUser(userData);
     const token = createJwtToken(user.id)
     return res.status(StatusCodes.OK).json({ token, user });
   } catch (error) {
-    console.log(error);
     pErr(error.message);
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: error.message });
   }
