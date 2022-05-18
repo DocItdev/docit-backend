@@ -14,8 +14,8 @@ export async function githubAuthController(req: Request, res: Response) {
     const fullName: string[] = userInfo.user.name?.split(" "); 
     const email = userInfo.userEmail;
     const userData:UserObject = { 
-      firstName: fullName.length ? fullName[0] : '',
-      lastName: fullName.length ? fullName[1] : '',
+      firstName: fullName?.length ? fullName[0] : '',
+      lastName: fullName?.length ? fullName[1] : '',
       email
     };
     const user = await createUser(userData);
