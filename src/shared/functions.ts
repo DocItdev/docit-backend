@@ -6,6 +6,14 @@ export const pErr = (err: Error) => {
     }
 };
 
+export const pInfo = (...infoStrings: string[]) => {
+    infoStrings.forEach(info => {
+        if(info) {
+            logger.info(info);
+        }
+    });
+}
+
 export const getRandomInt = () => {
     return Math.floor(Math.random() * 1_000_000_000_000);
 };
