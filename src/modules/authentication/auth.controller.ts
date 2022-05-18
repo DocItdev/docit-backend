@@ -11,7 +11,7 @@ export async function githubAuthController(req: Request, res: Response) {
     const code: string = body.code;
     const userInfo = await verifyGithubCode(code);
 
-    const fullName = userInfo.user.name.split(" "); 
+    const fullName = userInfo.user.name?.split(" "); 
     const email = userInfo.userEmail;
     const userData:UserObject = { 
       firstName: fullName[0],
