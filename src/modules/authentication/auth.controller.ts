@@ -22,6 +22,8 @@ export async function githubAuthController(req: Request, res: Response) {
     const token = createJwtToken(user.id)
     return res.status(StatusCodes.OK).json({ token, user });
   } catch (error) {
+    console.log(error);
+    pErr(error.message);
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: error.message });
   }
 }
