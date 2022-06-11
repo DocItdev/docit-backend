@@ -18,6 +18,11 @@ Team.init({
     allowNull: false,
     unique: true,
   },
+  description: {
+    type: DataTypes.STRING,
+    allowNull: true,
+    unique: false,
+  }
 }, { sequelize });
 
 export default Team;
