@@ -11,4 +11,5 @@ export interface PostObject {
   textContent?: string;
   index: number;
   mediaFilePath?: string;
+  DocumentId?: string;
 }

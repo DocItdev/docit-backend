@@ -1,8 +1,9 @@
 import { DataTypes, Model } from "sequelize";
 import { sequelize } from "../../config";
 import Document from "../documents/documents.model";
+import { ProjectObject } from "./projects.interface";
 
-export class Project extends Model {
+export class Project extends Model<ProjectObject, ProjectObject> {
   declare id: string;
   declare name: string;
   declare description: string;

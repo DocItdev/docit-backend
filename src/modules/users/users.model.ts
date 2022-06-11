@@ -1,9 +1,10 @@
 import { DataTypes, Model } from "sequelize";
 import { sequelize } from "../../config";
 import  Project  from "../projects/projects.model";
+import { UserObject } from "./users.interface";
 
 
-export class User extends Model {
+export class User extends Model<UserObject, UserObject> {
   declare id: string;
   declare email: string;
   declare firstName: string;
