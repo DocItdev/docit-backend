@@ -1,6 +1,5 @@
 import { DataTypes, Model } from "sequelize";
 import { sequelize } from "../../config";
-import  Project  from "../projects/projects.model";
 import { UserObject } from "./users.interface";
 
 
@@ -31,8 +30,5 @@ User.init({
     allowNull: false,
   },
 }, { sequelize });
-
-User.hasMany(Project);
-Project.belongsTo(User);
 
 export default User;

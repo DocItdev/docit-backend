@@ -1,14 +1,15 @@
 import { DataTypes, Model } from "sequelize";
 import { sequelize } from "../../config";
-import Workspace from "./workspaces";
+import Project from "../projects/projects.model";
 import { WorkspaceAttributes } from "./workspaces.interface";
 
-export class Team extends Model<WorkspaceAttributes, WorkspaceAttributes> {
+export class Workspace extends Model<WorkspaceAttributes, WorkspaceAttributes> {
   declare id: string;
   declare title: string;
+  declare description: string;
 }
 
-Team.init({
+Workspace.init({
   id: {
     primaryKey: true,
     type: DataTypes.UUID,
@@ -17,13 +18,21 @@ Team.init({
   title: {
     type: DataTypes.STRING,
     allowNull: false,
-    unique: true,
+    unique: false,
   },
   description: {
     type: DataTypes.STRING,
     allowNull: true,
     unique: false,
+  },
+  personal: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: false,
   }
 }, { sequelize });
+
+Workspace.hasMany(Project);
+Project.belongsTo(Workspace);
 
 export default Workspace;
