@@ -1,13 +1,13 @@
 import { DataTypes, Model } from "sequelize";
 import { sequelize } from "../../config";
-import { TeamAttributes } from "./teams.interface";
+import { WorkspaceAttributes } from "./workspaces.interface";
 
-export class Team extends Model<TeamAttributes, TeamAttributes> {
+export class Workspace extends Model<WorkspaceAttributes, WorkspaceAttributes> {
   declare id: string;
   declare title: string;
 }
 
-Team.init({
+Workspace.init({
   id: {
     primaryKey: true,
     type: DataTypes.UUID,
@@ -25,4 +25,4 @@ Team.init({
   }
 }, { sequelize });
 
-export default Team;
+export default Workspace;
