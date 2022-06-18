@@ -10,7 +10,7 @@ export class User_Workspace extends Model<UserWorkspaceAttributes, UserWorkspace
 
 User_Workspace.init({
   role: {
-    type: DataTypes.ENUM('admin', 'editor')
+    type: DataTypes.STRING
   },
 }, { sequelize });
 

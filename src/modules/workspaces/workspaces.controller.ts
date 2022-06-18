@@ -1,14 +1,16 @@
 import { Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes';
 import { pErr } from '../../shared/functions';
+import { UserRequest } from '../users/users.interface';
 import { WorkspaceAttributes } from './workspaces.interface';
 import { createWorkspace } from './workspaces.service';
 
 
-export async function createWorkspaceController(req: Request, res: Response) {
+export async function createWorkspaceController(req: UserRequest, res: Response) {
   try {
     const workspaceData = req.body as WorkspaceAttributes;
-    const workspace = await createWorkspace(workspaceData);
+    const userId: string = req.user.id;
+    const workspace = await createWorkspace(workspaceData, { UserId: userId, role: 'admin' });
     return res.status(StatusCodes.OK).json(workspace);
   } catch(error) {
     pErr(error.message);
