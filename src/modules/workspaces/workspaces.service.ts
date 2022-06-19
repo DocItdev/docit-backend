@@ -1,6 +1,9 @@
 
 import { UserWorkspaceAttributes } from "../userworkspaces/userworkspaces.interface";
-import { associateUserWorkspace, disassociateUserWorkspace } from "../userworkspaces/userworkspaces.service";
+import {
+  associateUserWorkspace,
+  disassociateUserWorkspace
+} from "../userworkspaces/userworkspaces.service";
 import { WorkspaceAttributes } from "./workspaces.interface";
 import Workspace from "./workspaces.model";
 

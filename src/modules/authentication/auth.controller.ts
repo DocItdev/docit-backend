@@ -1,7 +1,7 @@
 import {Request, Response } from 'express';
 import StatusCodes from 'http-status-codes';
 import { verifyGithubCode, verifyGoogleCode, createJwtToken } from './auth.service';
-import { createUser } from '../users/users.service';
+import { createUser, findUserByEmail } from '../users/users.service';
 import { UserObject } from '../users/users.interface';
 import { pErr } from '../../shared/functions';
 
@@ -18,7 +18,8 @@ export async function githubAuthController(req: Request, res: Response) {
       lastName: fullName?.length ? fullName[1] : '',
       email
     };
-    const user = await createUser(userData);
+    await createUser(userData);
+    const user = await findUserByEmail(email);
     const token = createJwtToken(user.id)
     return res.status(StatusCodes.OK).json({ token, user });
   } catch (error) {
@@ -38,7 +39,8 @@ export async function googleAuthController(req: Request, res: Response) {
       lastName: userInfo.family_name,
       email: userInfo.email
     };
-    const user = await createUser(userData);
+    await createUser(userData);
+    const user = await findUserByEmail(userInfo.email);
     const jwtToken = createJwtToken(user.id)
     return res.status(StatusCodes.OK).json({ token: jwtToken, user });
   } catch (error) {

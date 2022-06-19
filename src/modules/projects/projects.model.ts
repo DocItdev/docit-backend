@@ -24,6 +24,10 @@ Project.init({
     type: DataTypes.STRING,
     allowNull: true,
   },
+  author: {
+    type: DataTypes.UUID,
+    allowNull: false,
+  },
 }, {sequelize});
 
 Project.hasMany(Document);
