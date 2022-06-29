@@ -17,7 +17,15 @@ const app = express();
 const { BAD_REQUEST } = StatusCodes;
 
 
-app.use(cors( { origin: process.env.ORIGIN } ));
+app.use(cors( 
+    { 
+        origin: process.env.ORIGIN,
+        credentials: true,
+        allowedHeaders: ['Content-Type', 'Authorization', 'x-csrf-token'],
+        exposedHeaders: ['*', 'Authorization' ] 
+
+    } 
+));
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(cookieParser());
