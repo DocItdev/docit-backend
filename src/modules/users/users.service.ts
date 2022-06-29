@@ -22,6 +22,7 @@ export async function createUser(user: UserObject) {
     {
       title: workspaceTitle,
       personal: true,
+      name: `${user.firstName}-${user.lastName}-${userDoc.id}`
     },
     {
       UserId: userDoc.id,

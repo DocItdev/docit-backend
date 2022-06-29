@@ -20,6 +20,11 @@ Workspace.init({
     allowNull: false,
     unique: false,
   },
+  name: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true,
+  },
   description: {
     type: DataTypes.STRING,
     allowNull: true,

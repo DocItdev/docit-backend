@@ -1,4 +1,5 @@
 
+import User from "../users/users.model";
 import { UserWorkspaceAttributes } from "../userworkspaces/userworkspaces.interface";
 import {
   associateUserWorkspace,
@@ -11,6 +12,10 @@ export async function createWorkspace(
   data: WorkspaceAttributes,
   associationData: UserWorkspaceAttributes
   ) {
+    const existingWorkspace = await Workspace.findOne({ where: { name: data.name } })
+    if (existingWorkspace) {
+      throw new Error('Workspace name is taken');
+    }
   const workspace = await Workspace.create(data);
   await workspace.save();
   await associateUserWorkspace({ 
@@ -27,15 +32,17 @@ export async function getWorkspaceById(workspaceId: string) {
     where: {
       id: workspaceId,
     },
+    include: [User]
   });
   return workspace;
 }
 
-export async function getWorkspaceByTitle(workspaceTitle: string) {
+export async function getWorkspaceByName(workspaceName: string) {
   const workspace = await Workspace.findOne({
     where: {
-      title: workspaceTitle,
+      name: workspaceName,
     },
+    include: [User]
   });
   return workspace;
 }
