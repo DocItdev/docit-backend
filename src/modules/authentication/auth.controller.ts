@@ -26,12 +26,12 @@ export async function githubAuthController(req: Request, res: Response) {
 
     res.cookie('__refresh_token', refreshToken, {
       secure: false, // set to true if your using https or samesite is none
-    //httpOnly: false, // backend only
+    httpOnly: false, // backend only
     //sameSite: 'none',
     expires: new Date(Date.now() + (3600 * 1000 * 24 * 180 * 1)), 
     });
     // res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
-    // res.header('Access-Control-Allow-Credentials', 'true');
+     res.header('Access-Control-Allow-Credentials', 'true');
     // res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
     
     return res.status(StatusCodes.OK).json({ token, user });
