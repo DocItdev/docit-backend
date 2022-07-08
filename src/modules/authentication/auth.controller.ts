@@ -26,7 +26,7 @@ export async function githubAuthController(req: Request, res: Response) {
 
     res.cookie('__refresh_token', refreshToken, {
       secure: false, // set to true if your using https or samesite is none
-    httpOnly: false, // backend only
+    httpOnly: true, // backend only
     //sameSite: 'none',
     expires: new Date(Date.now() + (3600 * 1000 * 24 * 180 * 1)), 
     });
@@ -62,6 +62,7 @@ export async function googleAuthController(req: Request, res: Response) {
 }
 
 export function refreshTokenConroller(req: Request, res: Response) {
+  console.log("hello")
   const cookies = req.cookies;
   console.log("hello", JSON.stringify(cookies));
   if (!cookies?.__refresh_token) return res.status(StatusCodes.UNAUTHORIZED);
