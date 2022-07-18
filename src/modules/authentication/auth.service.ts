@@ -73,12 +73,22 @@ export async function verifyGoogleCode(token: string) {
 
 export function createJwtToken(userId: string): string {
   return jwt.sign({ userId }, process.env.COOKIE_SECRET, {
-    expiresIn: "1m",
+    expiresIn: "5s",
   });
 }
 
 export function createRefreshJwtToken(userId: string): string {
   return jwt.sign({ userId }, process.env.REFRESH_SECRET, {
-    expiresIn: "5m",
+    expiresIn: "10s",
   });
 }
+
+export function verifyJwtToken(refreshToken:string) {
+  const decoded =  jwt.verify(
+    refreshToken,
+    process.env.REFRESH_SECRET
+  )
+
+  return decoded as {userId:string}
+}
+

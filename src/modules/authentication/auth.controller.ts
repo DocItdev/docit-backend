@@ -1,11 +1,11 @@
 /* eslint-disable max-len */
 import { Request, Response } from 'express';
 import StatusCodes from 'http-status-codes';
-import { verifyGithubCode, verifyGoogleCode, createJwtToken, createRefreshJwtToken } from './auth.service';
+import { verifyGithubCode, verifyGoogleCode, createJwtToken, createRefreshJwtToken, verifyJwtToken } from './auth.service';
 import { createUser } from '../users/users.service';
-import { UserObject } from '../users/users.interface';
+import { UserObject, UserRequest } from '../users/users.interface';
 import { pErr } from '../../shared/functions';
-import jwt from 'jsonwebtoken';
+
 
 export async function githubAuthController(req: Request, res: Response) {
   try {
@@ -25,13 +25,13 @@ export async function githubAuthController(req: Request, res: Response) {
     const refreshToken = createRefreshJwtToken(user.id);
 
     res.cookie('__refresh_token', refreshToken, {
-      secure: false, // set to true if your using https or samesite is none
+      secure: true, // set to true if your using https or samesite is none
     httpOnly: true, // backend only
-    //sameSite: 'none',
+    sameSite: 'none',
     expires: new Date(Date.now() + (3600 * 1000 * 24 * 180 * 1)), 
     });
     // res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
-     res.header('Access-Control-Allow-Credentials', 'true');
+    // res.header('Access-Control-Allow-Credentials', 'true');
     // res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
     
     return res.status(StatusCodes.OK).json({ token, user });
@@ -61,24 +61,17 @@ export async function googleAuthController(req: Request, res: Response) {
   }
 }
 
-export function refreshTokenConroller(req: Request, res: Response) {
-  console.log("hello")
-  const cookies = req.cookies;
-  console.log("hello", JSON.stringify(cookies));
-  if (!cookies?.__refresh_token) return res.status(StatusCodes.UNAUTHORIZED);
-  console.log(cookies.__refresh_token);
-  const refreshToken = cookies.__refresh_token;
+export function refreshTokenConroller(req: UserRequest, res: Response) {
+  try {
+    const user = req.user;
+    console.log(user);
+    const token = createJwtToken(user.id);
 
-  jwt.verify(
-    refreshToken,
-    process.env.REFRESH_SECRET,
-    (err, decoded) => {
-      if (err) return res.status(StatusCodes.FORBIDDEN).json({ message: err.message });
-
-      const accessToken = createJwtToken(refreshToken.userId);
-      return res.status(StatusCodes.OK).json({ token: accessToken });
-    }
-  )
+    return res.status(StatusCodes.OK).json({ token, user });
+  } catch (error) {
+    pErr(error.message);
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: error.message });
+  }
 }
 
 //this will delete the refresh token on the UI. Still need to imlement deleting the jwt from state on ui
