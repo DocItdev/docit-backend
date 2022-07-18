@@ -3,3 +3,8 @@ export interface UserWorkspaceAttributes {
   WorkspaceId?: string;
   role?: string;
 }
+
+export interface WorkspaceUsers {
+  WorkspaceId: string;
+  emails: string[];
+}

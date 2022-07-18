@@ -3,7 +3,7 @@ import { StatusCodes } from 'http-status-codes';
 import { pErr } from '../../shared/functions';
 import { UserRequest } from '../users/users.interface';
 import { WorkspaceAttributes } from './workspaces.interface';
-import { createWorkspace, getWorkspaceByName } from './workspaces.service';
+import { createWorkspace, getWorkspaceById } from './workspaces.service';
 
 
 export async function createWorkspaceController(req: UserRequest, res: Response) {
@@ -20,8 +20,8 @@ export async function createWorkspaceController(req: UserRequest, res: Response)
 
 export async function getWorkspaceController(req: Request, res: Response) {
   try {
-    const workspaceName = req.params.name;
-    const workspace = await getWorkspaceByName(workspaceName);
+    const workspaceId = req.params.id;
+    const workspace = await getWorkspaceById(workspaceId);
     return res.status(StatusCodes.OK).json(workspace);
   } catch(error) {
     pErr(error.message);

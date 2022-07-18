@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 import User from "./users.model";
 import { UserObject } from "./users.interface";
-import { createInitialProject } from "../projects/projects.service";
 import Workspace from "../workspaces/workspaces.model";
 import { createWorkspace } from "../workspaces/workspaces.service";
 import { disassociateUserWorkspace } from "../userworkspaces/userworkspaces.service";
@@ -18,11 +17,10 @@ export async function createUser(user: UserObject) {
     user.firstName && user.lastName
       ? `${user.firstName} ${user.lastName}'s Personal Workspace`
       : "Personal Workspace";
-  const workspace = await createWorkspace(
+  await createWorkspace(
     {
       title: workspaceTitle,
       personal: true,
-      name: `${user.firstName}-${user.lastName}-${userDoc.id}`
     },
     {
       UserId: userDoc.id,
@@ -30,7 +28,6 @@ export async function createUser(user: UserObject) {
     }
   );
   await userDoc.save();
-  await createInitialProject(userDoc.get("id"), workspace.id);
   return userDoc;
 }
 

@@ -1,9 +1,9 @@
-
+import { createInitialProject } from "../projects/projects.service";
 import User from "../users/users.model";
 import { UserWorkspaceAttributes } from "../userworkspaces/userworkspaces.interface";
 import {
   associateUserWorkspace,
-  disassociateUserWorkspace
+  disassociateUserWorkspace,
 } from "../userworkspaces/userworkspaces.service";
 import { WorkspaceAttributes } from "./workspaces.interface";
 import Workspace from "./workspaces.model";
@@ -11,48 +11,47 @@ import Workspace from "./workspaces.model";
 export async function createWorkspace(
   data: WorkspaceAttributes,
   associationData: UserWorkspaceAttributes
-  ) {
-    const existingWorkspace = await Workspace.findOne({ where: { name: data.name } })
-    if (existingWorkspace) {
-      throw new Error('Workspace name is taken');
-    }
+) {
   const workspace = await Workspace.create(data);
   await workspace.save();
-  await associateUserWorkspace({ 
+  await associateUserWorkspace({
     UserId: associationData.UserId,
     WorkspaceId: workspace.id,
-    role: associationData.role
+    role: associationData.role,
   });
+  await createInitialProject(associationData.UserId, workspace.id);
   return workspace;
 }
-
 
 export async function getWorkspaceById(workspaceId: string) {
   const workspace = await Workspace.findOne({
     where: {
       id: workspaceId,
     },
-    include: [User]
+    include: [User],
   });
   return workspace;
 }
 
-export async function getWorkspaceByName(workspaceName: string) {
+export async function getWorkspaceByTitle(workspaceTitle: string) {
   const workspace = await Workspace.findOne({
     where: {
-      name: workspaceName,
+      title: workspaceTitle,
     },
-    include: [User]
+    include: [User],
   });
   return workspace;
 }
 
 export async function updateWorkspace(workspace: Workspace) {
-  const result: [number, Workspace[]] = await Workspace.update({...workspace}, {
-    where: {
-      id: workspace.id,
+  const result: [number, Workspace[]] = await Workspace.update(
+    { ...workspace },
+    {
+      where: {
+        id: workspace.id,
+      },
     }
-  });
+  );
   return result;
 }
 
@@ -61,7 +60,7 @@ export async function deleteWorkspace(workspaceId: string) {
   const statusCode: number = await Workspace.destroy({
     where: {
       id: workspaceId,
-    }
+    },
   });
   return statusCode;
 }
