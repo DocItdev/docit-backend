@@ -7,6 +7,6 @@ import { createUserController, getUserController, deleteUserController } from '.
 // Export the router
 const router = Router();
 router.post('/',passport.authenticate('jwt', { session: false }), createUserController);
-router.get('/:email',passport.authenticate('jwt', { session: false }), getUserController);
-router.delete('/:id',passport.authenticate('jwt', { session: false }), deleteUserController);
+router.get('/:email', getUserController);
+router.delete('/:id', deleteUserController);
 export default router;
