@@ -4,6 +4,7 @@ import { pErr, pInfo } from '../../shared/functions';
 import axios from 'axios';
 import { OAuth2Client } from 'google-auth-library';
 import jwt from 'jsonwebtoken';
+import { AUTH_TOKEN_EXPIRES_IN, REFRESH_TOKEN_EXPIRES_IN } from '../../shared/constants';
 
 
 function handleGithubError(response) {
@@ -73,6 +74,21 @@ export async function verifyGoogleCode(token: string) {
 
 export function createJwtToken(userId: string): string {
   return jwt.sign({ userId }, process.env.COOKIE_SECRET, {
-    expiresIn: "10h",
+    expiresIn: AUTH_TOKEN_EXPIRES_IN,
   });
+}
+
+export function createRefreshJwtToken(userId: string): string {
+  return jwt.sign({ userId }, process.env.REFRESH_SECRET, {
+    expiresIn: REFRESH_TOKEN_EXPIRES_IN,
+  });
+}
+
+export function verifyJwtToken(refreshToken:string) {
+  const decoded =  jwt.verify(
+    refreshToken,
+    process.env.REFRESH_SECRET
+  )
+
+  return decoded as {userId:string}
 }
