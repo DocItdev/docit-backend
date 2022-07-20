@@ -3,7 +3,7 @@ import { StatusCodes } from 'http-status-codes';
 import { pErr } from '../../shared/functions';
 import { UserRequest } from '../users/users.interface';
 import { WorkspaceAttributes } from './workspaces.interface';
-import { createWorkspace, getWorkspaceById } from './workspaces.service';
+import { createWorkspace, getUserWorkspaces, getWorkspaceById } from './workspaces.service';
 
 
 export async function createWorkspaceController(req: UserRequest, res: Response) {
@@ -23,6 +23,17 @@ export async function getWorkspaceController(req: Request, res: Response) {
     const workspaceId = req.params.id;
     const workspace = await getWorkspaceById(workspaceId);
     return res.status(StatusCodes.OK).json(workspace);
+  } catch(error) {
+    pErr(error.message);
+    return res.status(StatusCodes.BAD_REQUEST).json({ message: error.message });
+  }
+}
+
+export async function getAllUserWorkspaces(req: UserRequest, res: Response) {
+  try {
+    const userId: string = req.user.id
+    const workspaces = await getUserWorkspaces(userId);
+    return res.status(StatusCodes.OK).json(workspaces);
   } catch(error) {
     pErr(error.message);
     return res.status(StatusCodes.BAD_REQUEST).json({ message: error.message });

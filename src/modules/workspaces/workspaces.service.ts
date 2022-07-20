@@ -33,6 +33,16 @@ export async function getWorkspaceById(workspaceId: string) {
   return workspace;
 }
 
+export async function getUserWorkspaces(UserId: string): Promise<Workspace[]> {
+  const workspaces = await Workspace.findAll({
+    include: [{
+      model: User,
+      where: { id: UserId }
+    }]
+  });
+  return workspaces;
+}
+
 export async function getWorkspaceByTitle(workspaceTitle: string) {
   const workspace = await Workspace.findOne({
     where: {
