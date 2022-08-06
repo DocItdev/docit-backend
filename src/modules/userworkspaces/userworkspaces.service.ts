@@ -1,8 +1,10 @@
 import User from "../users/users.model";
+import { getWorkspaceById } from "../workspaces/workspaces.service";
 import {
   UserWorkspaceAttributes,
   WorkspaceUsers,
 } from "./userworkspaces.interface";
+import { WorkspaceAttributes } from "../workspaces/workspaces.interface";
 import User_Workspace from "./userworkspaces.model";
 
 export async function associateUserWorkspace(
@@ -22,6 +24,10 @@ export async function disassociateUserWorkspace(
 }
 
 export async function addUsersToWorkspaceByEmail(workspaceUsers: WorkspaceUsers) {
+  const workspace: WorkspaceAttributes = await getWorkspaceById(workspaceUsers.WorkspaceId);
+  if (workspace.personal) {
+    throw new Error('Cannot Add member to personal workspace');
+  }
   const userPromises: Promise<User>[] = workspaceUsers.emails.map((email) =>
     User.findOne({ where: { email } })
   );
