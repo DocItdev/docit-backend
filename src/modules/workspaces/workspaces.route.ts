@@ -13,7 +13,7 @@ router.post(
   createWorkspaceController
 );
 router.get(
-  "/",
+  "/:id",
   passport.authenticate("jwt", { session: false }),
   getWorkspaceController
 );
