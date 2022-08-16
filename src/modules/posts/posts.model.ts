@@ -1,7 +1,8 @@
 import { DataTypes, Model } from "sequelize";
 import { sequelize } from "../../config";
+import { PostObject } from "./posts.interface";
 
-export class Post extends Model {
+export class Post extends Model<PostObject, PostObject> {
   declare id: string;
   declare postType: string;
   declare title: string;

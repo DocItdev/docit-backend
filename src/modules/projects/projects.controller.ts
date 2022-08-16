@@ -1,7 +1,8 @@
-import { Response } from "express";
+import { Response, Request } from "express";
 import { StatusCodes } from "http-status-codes";
 import { pErr } from "../../shared/functions";
 import { UserRequest } from "../users/users.interface";
+import { ProjectRequestBody } from "./projects.interface";
 import {
   createProject,
   deleteProject,
@@ -12,15 +13,13 @@ import {
 
 export async function createProjectController(req: UserRequest, res: Response) {
   try {
-    const { body } = req;
-    const projectName = body.name;
-    const projectDescription = body.description;
-   
-    const userId = req.user.id;
+    const { name, description, workspaceId } = req.body as ProjectRequestBody;
+    const author = req.user.id;
     const project = await createProject({
-      name: projectName,
-      description: projectDescription,
-      UserId: userId,
+      name,
+      description,
+      author,
+      WorkspaceId: workspaceId
     });
 
     return res.status(StatusCodes.OK).json(project);
@@ -29,22 +28,22 @@ export async function createProjectController(req: UserRequest, res: Response) {
   }
 }
 
-export async function deleteProjectController(req: UserRequest, res: Response) {
+export async function deleteProjectController(req: Request, res: Response) {
   try {
     const projectId = req.params.id;
-    const userId: string = req.user.id;
+    const workspaceId: string = req.query.workspaceId as string;
 
-    const successCode = await deleteProject(userId, projectId);
+    const successCode = await deleteProject(workspaceId, projectId);
     return res.status(StatusCodes.OK).json(successCode);
   } catch (error) {
     return res.status(StatusCodes.BAD_REQUEST).json({ message: error.message });
   }
 }
 
-export async function getAllProjectsController(req: UserRequest, res: Response) {
+export async function getAllProjectsController(req: Request, res: Response) {
   try {
-    const userId: string = req.user.id;
-    const projects = await getAllProjects(userId);
+    const workspaceId: string = req.query.workspaceId as string;
+    const projects = await getAllProjects(workspaceId);
 
     return res.status(StatusCodes.OK).json({ projects });
   } catch (error) {
@@ -53,11 +52,11 @@ export async function getAllProjectsController(req: UserRequest, res: Response) 
   }
 }
 
-export async function getProjectController(req: UserRequest, res: Response) {
+export async function getProjectController(req: Request, res: Response) {
   try {
     const projectId = req.params.id;
-    const userId: string = req.user.id;
-    const project = await getProject(projectId, userId);
+    const workspaceId: string = req.query.workspaceId as string;
+    const project = await getProject(projectId, workspaceId);
     return res.status(StatusCodes.OK).json(project);
   } catch (error) {
     return res.status(StatusCodes.BAD_REQUEST).json({ message: error.message });
@@ -67,12 +66,11 @@ export async function getProjectController(req: UserRequest, res: Response) {
 export async function updateProjectController(req: UserRequest, res: Response) {
   try{
     const projectId = req.params.id;
-    const userId: string = req.user.id;
-    const newProjectName: string = req.body.name;
-    const newProjectDescription: string = req.body.description;
+    const workspaceId: string = req.query.workspaceId as string;
+  const projectData = req.body as ProjectRequestBody;
 
     const successCode = await updateProject(
-      userId, projectId, newProjectName, newProjectDescription);
+      workspaceId, projectId, projectData);
     return res.status(StatusCodes.OK).json(successCode);
 
   } catch(error){
