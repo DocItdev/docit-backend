@@ -13,10 +13,7 @@ export async function createUser(user: UserObject) {
   // createUser
   const userDoc = await User.create(user);
   // create personal workspace
-  const workspaceTitle =
-    user.firstName && user.lastName
-      ? `${user.firstName} ${user.lastName}'s Personal Workspace`
-      : "Personal Workspace";
+  const workspaceTitle = 'My Workspace';
   await createWorkspace(
     {
       title: workspaceTitle,
