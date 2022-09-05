@@ -1,6 +1,6 @@
 import { DataTypes, Model } from "sequelize";
 import { sequelize } from "../../config";
-import Post from "../posts/posts.model";
+import FileRecord from "../mediastorage/mediastorage.model";
 
 export class Document extends Model {
   declare id: string;
@@ -21,7 +21,9 @@ Document.init({
   
 }, { sequelize });
 
-Document.hasMany(Post);
-Post.belongsTo(Document);
+// Document.hasMany(Post);
+// Post.belongsTo(Document);
+Document.hasMany(FileRecord);
+FileRecord.belongsTo(Document);
 
 export default Document;
