@@ -12,7 +12,9 @@ export async function createWorkspace(
   data: WorkspaceAttributes,
   associationData: UserWorkspaceAttributes
 ) {
-  if (await Workspace.findOne({ where: { title: data.title } })) {
+  const existingWorkspace = await Workspace.findOne({ where: { title: data.title } });
+  const canCreate = existingWorkspace || data.personal
+  if (!canCreate) {
     throw new Error('Workspace already exists.')
   }
   const workspace = await Workspace.create(data);
