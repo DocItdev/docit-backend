@@ -2,13 +2,10 @@ import { Options } from 'sequelize';
 
 export default {
   port: process.env.PORT ,
-  dbUsername: process.env.DB_USERNAME ,
-  dbName: process.env.DB_NAME ,
-  dbPassword: process.env.DB_PASSWORD ,
   dbDialect: process.env.DB_DIALECT ,
+  dbUri: process.env.DB_URI,
   postgres: {
     logging: false, // Set this to true to see SQL logs, currently disable.
-    host: process.env.DB_HOST ,
     port: parseInt(process.env.BD_PORT ),
     dialect: process.env.DB_DIALECT ,
     operatorAliases: false,
