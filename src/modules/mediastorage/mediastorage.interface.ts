@@ -2,7 +2,7 @@ export interface FileRecordType {
   id?: string;
   key: string;
   type: string;
-  DocId?: string;
+  DocumentId?: string;
 }
 
 export interface FileMetadata {

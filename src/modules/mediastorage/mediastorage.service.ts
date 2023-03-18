@@ -31,7 +31,7 @@ function generateFileKey(file: AwsFile, timestamp: number): string {
  * @description retrieves one media file from s3 bucket given file path or key
  * @returns name of uploaded file
  */
-export async function uploadFile(file: AwsFile, docId: string): Promise<FileRecordType> {
+export async function uploadFile(file: AwsFile, DocumentId: string): Promise<FileRecordType> {
   const timestamp: number = Date.now();
   const { bucketName } = s3Config;
   const fileKey: string = generateFileKey(file, timestamp);
@@ -49,19 +49,18 @@ export async function uploadFile(file: AwsFile, docId: string): Promise<FileReco
     params: target,
   });
   await parallelUpload.done();
-
   const fileRecord = await FileRecord.create({
     key: fileKey,
     type: file.type,
-    DocId: docId,
+    DocumentId: DocumentId,
   });
   return fileRecord;
 }
 
-export async function getFileRecords(DocId: string) {
+export async function getFileRecords(DocumentId: string) {
   const fileRecord = await FileRecord.findAll({
     where: {
-      DocId,
+      DocumentId,
     }
   });
   return fileRecord;

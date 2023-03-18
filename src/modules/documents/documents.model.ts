@@ -1,10 +1,12 @@
 import { DataTypes, Model } from "sequelize";
 import { sequelize } from "../../config";
 import FileRecord from "../mediastorage/mediastorage.model";
+import { DocumentType } from "./documents.interface";
 
-export class Document extends Model {
+export class Document extends Model<DocumentType, DocumentType> {
   declare id: string;
   declare name: string;
+  declare textContent: string;
 }
 
 Document.init({
@@ -15,6 +17,11 @@ Document.init({
   },
   name: {
     type: DataTypes.STRING,
+    allowNull: true,
+    unique: false,
+  },
+  textContent: {
+    type: DataTypes.TEXT,
     allowNull: true,
     unique: false,
   }
