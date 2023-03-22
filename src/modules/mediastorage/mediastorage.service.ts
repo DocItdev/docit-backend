@@ -3,7 +3,8 @@ import { S3, GetObjectCommand } from '@aws-sdk/client-s3'
 import { Upload } from '@aws-sdk/lib-storage';
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import s3Config from '../../config/s3Config';
-import { AwsFile, UploadedFile } from './mediastorage.interface';
+import { AwsFile, FileRecordType } from './mediastorage.interface';
+import { FileRecord } from './mediastorage.model';
 
 const s3Client = new S3({
   credentials: {
@@ -30,7 +31,7 @@ function generateFileKey(file: AwsFile, timestamp: number): string {
  * @description retrieves one media file from s3 bucket given file path or key
  * @returns name of uploaded file
  */
-export async function uploadFile(file: AwsFile): Promise<string> {
+export async function uploadFile(file: AwsFile, DocumentId: string): Promise<FileRecordType> {
   const timestamp: number = Date.now();
   const { bucketName } = s3Config;
   const fileKey: string = generateFileKey(file, timestamp);
@@ -48,8 +49,21 @@ export async function uploadFile(file: AwsFile): Promise<string> {
     params: target,
   });
   await parallelUpload.done();
+  const fileRecord = await FileRecord.create({
+    key: fileKey,
+    type: file.type,
+    DocumentId: DocumentId,
+  });
+  return fileRecord;
+}
 
-  return fileKey;
+export async function getFileRecords(DocumentId: string) {
+  const fileRecord = await FileRecord.findAll({
+    where: {
+      DocumentId,
+    }
+  });
+  return fileRecord;
 }
 
 /**
@@ -57,20 +71,20 @@ export async function uploadFile(file: AwsFile): Promise<string> {
  * @param file object containing path or key of file
  * @returns object with metadata and stats of file
  */
-export async function headUploadedFile(file: UploadedFile) {
+export async function headUploadedFile(fileKey: string) {
   const { bucketName } = s3Config;
   const data = await s3Client.headObject({
     Bucket: bucketName,
-    Key: file.path
+    Key: fileKey
   });
   return data;
 }
 
-export async function getUploadedFile (file: UploadedFile) {
+export async function getUploadedFile (fileKey: string) {
   const { bucketName } = s3Config;
   const response = await s3Client.getObject({
     Bucket: bucketName,
-    Key: file.path
+    Key: fileKey
   })
   return response;
 }
@@ -81,12 +95,12 @@ export async function getUploadedFile (file: UploadedFile) {
  * @returns a string containing temporary download Url for specified file
  */
 
-export async function getDownloadUrl(file: UploadedFile): Promise<string> {
+export async function getDownloadUrl(fileKey: string): Promise<string> {
   const { bucketName } = s3Config;
   const signedUrlExpireSeconds = 60 * 60 * 24; // 24h
   const command = new GetObjectCommand({
     Bucket: bucketName,
-    Key: file.path,
+    Key: fileKey,
   });
   const url: string = await getSignedUrl(
     s3Client,
@@ -101,10 +115,17 @@ export async function getDownloadUrl(file: UploadedFile): Promise<string> {
  * @param file 
  * @description deletes a file from the S3 bucket
  */
-export async function deleteUploadedFile(file: UploadedFile) {
+export async function deleteUploadedFile(fileKey: string) {
   const { bucketName } = s3Config;
   await s3Client.deleteObject({
     Bucket: bucketName,
-    Key: file.path,
+    Key: fileKey,
   });
+  const code = await FileRecord.destroy({
+    where: {
+      key: fileKey
+    }
+  });
+  return code;
 }
+

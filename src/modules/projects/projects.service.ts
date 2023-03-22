@@ -22,10 +22,11 @@ export async function createInitialProject(
     WorkspaceId: workspaceId,
   });
   await projectDoc.save();
-  const document = await createDocument(
-    projectDoc.get("id"),
-    "Sample Document"
-  );
+  const document = await createDocument({
+    ProjectId: projectDoc.get("id"),
+    name:"Sample Document",
+    textContent: ''
+  });
   await document.save();
   const post = await createPost(document.get("id"), postMock);
   await post.save();

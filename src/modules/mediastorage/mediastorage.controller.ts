@@ -1,18 +1,20 @@
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import { pErr } from "../../shared/functions";
-import { UploadedFile } from "./mediastorage.interface";
+import { FileRecordType } from "./mediastorage.interface";
 import {
   uploadFile,
   deleteUploadedFile,
   getDownloadUrl,
   headUploadedFile,
+  getFileRecords,
 } from "./mediastorage.service";
 
 export async function uploadFileController(req: Request, res: Response) {
   try {
     const file = req.file;
-    const fileUrl: string = await uploadFile({
+    const docId = req.params.docId
+    const fileRecord: FileRecordType = await uploadFile({
       name: file.fieldname,
       size: file.size,
       type: file.mimetype,
@@ -21,9 +23,8 @@ export async function uploadFileController(req: Request, res: Response) {
       metadata: {
         originalName: file.originalname
       }
-    });
-    const uploadedFile: UploadedFile = { path: fileUrl };
-    return res.status(StatusCodes.OK).json(uploadedFile);
+    }, docId);
+    return res.status(StatusCodes.OK).json(fileRecord);
   } catch (error) {
     pErr(error);
     return res.status(StatusCodes.BAD_REQUEST).json({ message: error.message });
@@ -32,11 +33,21 @@ export async function uploadFileController(req: Request, res: Response) {
 
 export async function getUploadedFileController(req: Request, res: Response) {
   try {
-    const { query } = req;
-    const file: UploadedFile = { path: String(query.filePath) };
-    const url: string = await getDownloadUrl(file);
-    const fileStat = await headUploadedFile(file);
+    const fileKey = String(req.params.fileKey)
+    const url: string = await getDownloadUrl(fileKey);
+    const fileStat = await headUploadedFile(fileKey);
     return res.status(StatusCodes.OK).json({ ...fileStat, mediaDownloadUrl: url });
+  } catch (error) {
+    pErr(error);
+    return res.status(StatusCodes.BAD_REQUEST).json({ message: error.message });
+  }
+}
+
+export async function getAllFileRecordsController(req: Request, res: Response) {
+  try {
+    const docId: string = req.params.docId;
+    const fileRecords = await getFileRecords(docId);
+    return res.status(StatusCodes.OK).json(fileRecords);
   } catch (error) {
     pErr(error);
     return res.status(StatusCodes.BAD_REQUEST).json({ message: error.message });
@@ -48,9 +59,8 @@ export async function deleteUploadedFileController(
   res: Response
 ) {
   try {
-    const { query } = req;
-    const file: UploadedFile = { path: String(query.filePath) };
-    await deleteUploadedFile(file);
+    const fileKey = String(req.params.fileKey)
+    await deleteUploadedFile(fileKey);
     return res.status(StatusCodes.OK).json({ message: "success" });
   } catch (error) {
     pErr(error);

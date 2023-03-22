@@ -1,3 +1,10 @@
+export interface FileRecordType {
+  id?: string;
+  key: string;
+  type: string;
+  DocumentId?: string;
+}
+
 export interface FileMetadata {
   originalName: string;
 }
@@ -9,8 +16,4 @@ export interface AwsFile {
   extension: string;
   content: ArrayBuffer,
   metadata?: FileMetadata;
-}
-
-export interface UploadedFile {
-  path: string;
 }
